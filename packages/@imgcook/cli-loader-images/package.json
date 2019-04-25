@@ -1,6 +1,6 @@
 {
   "name": "@imgcook/cli-loader-images",
-  "version": "0.0.1-alpha.0",
+  "version": "0.0.1-alpha.1",
   "description": "",
   "main": "index.js",
   "directories": {
@@ -12,7 +12,7 @@
   "author": "gindis",
   "license": "ISC",
   "dependencies": {
-    "@imgcook/cli-utils": "^0.0.1-alpha.0",
+    "@imgcook/cli-utils": "^0.0.1-alpha.1",
     "fs-extra": "^7.0.1",
     "request": "^2.88.0"
   },
@@ -24,7 +24,6 @@
     "url": "https://github.com/imgcook/imgcook-cli/issues"
   },
   "homepage": "https://github.com/imgcook/imgcook-cli#readme",
-  "devDependencies": {},
   "publishConfig": {
     "access": "public"
   }
