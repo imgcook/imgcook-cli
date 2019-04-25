@@ -1,0 +1,7 @@
+{
+  "name": "imgcook-cli",
+  "private": true,
+  "devDependencies": {
+    "lerna": "^3.13.1"
+  }
+}
