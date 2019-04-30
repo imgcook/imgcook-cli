@@ -57,7 +57,7 @@ const cliConfig = {
   path: imgcookConfigPath,
   configFile: imgcookRc,
   module: {
-    url: 'http://imgcook.taobao.org/api-open/code-acquire'
+    url: 'https://imgcook.taobao.org/api-open/code-acquire'
   }
 };
 

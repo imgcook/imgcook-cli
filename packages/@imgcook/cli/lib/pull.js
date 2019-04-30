@@ -38,7 +38,7 @@ const pull = async (value, option) => {
   });
   if (repoData.data && repoData.data.code) {
     const moduleData = repoData.data.moduleData;
-    spinner.start(`「${moduleData.name}」模块下载中...`);
+    spinner.start(`「${moduleData.name}」module download...`);
     let index = 0;
     if (!fs.existsSync(filePath)) {
       fs.mkdirSync(filePath);
@@ -82,8 +82,7 @@ const pull = async (value, option) => {
 
       index++;
     }
-    spinner.succeed(`「${moduleData.name}」模块下载完成。`);
-    // spinner.succeed(`${moduleData.name} Download Complete.`);
+    spinner.succeed(`「${moduleData.name}」module download completed。`);
   }
 };
 
