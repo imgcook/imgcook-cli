@@ -61,6 +61,8 @@ const pull = async (value, option) => {
               moduleData,
             });
           }
+        } else {
+          fileValue = item.panelValue;
         }
         const plugin = configData.plugins;
         if (plugin !== '') {
