@@ -17,17 +17,17 @@ const pkg = require('../package.json');
 const program = require('commander');
 const minimist = require('minimist');
 
-// version
+// Version
 program.version(pkg.version, '-v, --version').usage('<command> [options]');
 
-// config
+// Config
 // node bin/imgcook.js config xx
 program
   .command('config [value]')
-  .description('inspect and modify the imgcook config')
-  .option('--get <path>', 'get value from option')
-  .option('--set <path> <value>', 'set option value')
-  .option('--json', 'outputs JSON result only')
+  .description('Inspect and modify the imgcook config')
+  .option('--get <path>', 'Get value from option')
+  .option('--set <path> <value>', 'Set option value')
+  .option('--json', 'Outputs JSON result only')
   .allowUnknownOption()
   .action(async (value, cmd) => {
     require('../lib/config')(value, minimist(process.argv.slice(3)));
@@ -37,21 +37,21 @@ program
 // node bin/imgcook.js pull 1 --path ./test
 program
   .command('pull <moduleid>')
-  .description('pull module code from imgcook')
-  .option('-p, --path <path>', 'absolute or relative path')
+  .description('Pull module code from imgcook')
+  .option('-p, --path <path>', 'Absolute or relative path')
   .allowUnknownOption()
   .action(async (value, cmd) => {
     require('../lib/pull')(value, cmd);
   });
 
-// output help information on unknown commands
+// Output help information on unknown commands
 program.arguments('<command>').action(cmd => {
   program.outputHelp();
   console.log(`  ` + chalk.red(`Unknown command ${chalk.yellow(cmd)}.`));
   console.log();
 });
 
-// add some useful info on help
+// Add some useful info on help
 program.on('--help', () => {
   console.log();
   console.log(
