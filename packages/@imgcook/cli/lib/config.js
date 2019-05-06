@@ -85,8 +85,12 @@ const path = require('path');
 
 const config = async (value, option) => {
   let configData = {};
+  // 检查是否存在配置文件
   if (fse.existsSync(cliConfig.configFile)) {
     configData = await fse.readJson(cliConfig.configFile);
+  } else {
+    // 如果配置为空则去设置
+    value = 'set';
   }
   if (value !== 'set' && !option.set && !option.get) {
     console.log(JSON.stringify(configData, null, 2));
@@ -101,6 +105,7 @@ const config = async (value, option) => {
       const loaders = answers.loaders;
       if (loaders.length > 0) {
         try {
+          // 安装loader 依赖
           for (const item of loaders) {
             childProcess.execSync(`cd ${dirname} && tnpm install ${item}`);
           }
@@ -111,6 +116,7 @@ const config = async (value, option) => {
       const plugins = answers.plugins;
       if (plugins !== '') {
         try {
+          // 安装plugin 依赖
           childProcess.execSync(`cd ${dirname} && tnpm install ${plugins}`);
         } catch (error) {
           console.log(chalk.red(error));
