@@ -80,7 +80,7 @@ imgcook -h
 > 插件分为loader和plugin两种，loader用来处理文件内容，plugin用来处理工程目录
 
 ### 插件命名规范
-外部：loader： @imgcook/loader-xx  plugin: @imgcook/plugin-xx
+loader： @imgcook/loader-xx  plugin: @imgcook/plugin-xx
 
 
 ### 插件书写规范及模版

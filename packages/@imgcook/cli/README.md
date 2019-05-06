@@ -5,13 +5,9 @@ imgcook-cli可以将imgcook平台模块指定dsl和选择相应插件预处理�
 imgcook-cli安装依赖Nodejs和npm，建议使用Nodejs版本 9.x
 
 ```
-# 外部 npm
 npm install -g @imgcook/cli
 # 或
 yarn global add @imgcook/cli
-
-# 内部 tnpm
-tnpm install -g @imgcook/cli
 ```
 
 ## 使用
@@ -19,8 +15,8 @@ tnpm install -g @imgcook/cli
 #### imgcook config
 > 用户设置配置，默认是官方配置
 
-查看配置：icook config ls 
-设置配置：icook config set 
+查看配置：imgcook config ls 
+设置配置：imgcook config set 
 
 ```
 # 显示配置如 { accessId: 'kR1ds13cJ1wT8CcJ', 'dslId': 1, uploadUrl: '', loaders: ['@imgcook/plugin-x1', '@imgcook/plugin-x2' ...]}
@@ -82,9 +78,7 @@ imgcook -h
 > 插件分为loader和plugin两种，loader用来处理文件内容，plugin用来处理工程目录
 
 ### 插件命名规范
-外部：loader： @imgcook/loader-xx  plugin: @imgcook/plugin-xx 
-
-内部:  loader:   @imgcook/loader-xx plugin: @imgcook/plugin-xx 
+loader： @imgcook/loader-xx  plugin: @imgcook/plugin-xx 
 
 
 
