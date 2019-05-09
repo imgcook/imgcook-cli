@@ -1,24 +1,28 @@
 ## 介绍
-imgcook-cli可以将imgcook平台模块指定dsl和选择相应插件预处理后生成并下载到本地运行。
+imgcook-cli可以将 imgcook 平台模块指定 dsl 和选择相应插件预处理后生成并下载到本地运行。
 
 ## 安装
-imgcook-cli安装依赖Nodejs和npm，建议使用Nodejs版本 9.x
+> imgcook-cli安装依赖 Nodejs 和npm，建议使用Nodejs版本 9.x
 
-```
+```shell
+# npm
 npm install -g @imgcook/cli
 # 或
 yarn global add @imgcook/cli
+
 ```
+
+演示效果：<br/> <img src="https://img.alicdn.com/tfs/TB1s8TOU7voK1RjSZFwXXciCFXa-1627-1176.gif" width="500" />
 
 ## 使用
 ### 常用指令
 #### imgcook config
 > 用户设置配置，默认是官方配置
 
-查看配置：imgcook config ls 
-设置配置：imgcook config set 
 
-```
+查看配置：`imgcook config ls` <br />设置配置：`imgcook config set` 
+```shell
+ 
 # 显示配置如 { accessId: 'kR1ds13cJ1wT8CcJ', 'dslId': 1, uploadUrl: '', loaders: ['@imgcook/plugin-x1', '@imgcook/plugin-x2' ...]}
 #
 # 各模版对应的id
@@ -39,7 +43,11 @@ imgcook config set
 
 # 设置单个配置
 imgcook config --set <path> <value>
+
+
 ```
+注：Access ID 可以在 https://imgcook.taobao.org 上点击头像 》用户信息 查看
+<img src="https://img.alicdn.com/tfs/TB1rK6HU4YaK1RjSZFnXXa80pXa-1122-568.png" width="561" />
 
 
 ### imgcook pull

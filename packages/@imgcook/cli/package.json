@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/__test__.js"
   },
   "bin": {
     "imgcook": "bin/imgcook.js"
@@ -37,5 +37,8 @@
   "homepage": "https://github.com/imgcook/imgcook-cli#readme",
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0"
   }
 }
