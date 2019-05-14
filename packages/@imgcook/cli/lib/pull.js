@@ -48,21 +48,19 @@ const pull = async (value, option) => {
       try {
         // execute loader
         const loaders = configData.loaders;
-        let fileValue = item;
+        /**
+         * fileValue string
+         */
+        let fileValue = item.panelValue;
         if (loaders.length > 0) {
           for (const loaderItem of loaders) {
-            /**
-             * fileValue {}
-             */
-            fileValue = await require(loaderItem)(fileValue, {
+            fileValue = await require(loaderItem)(item, {
               filePath,
               index,
               config: configData,
               moduleData,
             });
           }
-        } else {
-          fileValue = item.panelValue;
         }
         const plugin = configData.plugins;
         if (plugin !== '') {

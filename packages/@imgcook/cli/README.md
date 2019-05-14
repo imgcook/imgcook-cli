@@ -36,7 +36,7 @@ yarn global add @imgcook/cli
 imgcook config
 
 # 查看单个配置
-imgcook config --set <path>
+imgcook config --get <path>
 
 # 设置配置
 imgcook config set
