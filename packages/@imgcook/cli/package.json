@@ -12,8 +12,8 @@
   "author": "gindis",
   "license": "ISC",
   "dependencies": {
-    "@imgcook/cli-loader-images": "^0.0.1-alpha.1",
-    "@imgcook/cli-plugin-generate": "^0.0.1-alpha.1",
+    "@imgcook/cli-loader-images": "0.0.1-alpha.1",
+    "@imgcook/cli-plugin-generate": "0.0.1-alpha.1",
     "@imgcook/cli-utils": "^0.0.1-alpha.1",
     "chalk": "^2.4.2",
     "commander": "^2.19.0",
