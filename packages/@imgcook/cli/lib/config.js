@@ -107,7 +107,7 @@ const config = async (value, option) => {
         try {
           // 安装loader 依赖
           for (const item of loaders) {
-            childProcess.execSync(`cd ${dirname} && tnpm install ${item}`);
+            childProcess.execSync(`cd ${dirname} && npm install ${item}`);
           }
         } catch (error) {
           console.log(chalk.red(error));
@@ -117,7 +117,7 @@ const config = async (value, option) => {
       if (plugins !== '') {
         try {
           // 安装plugin 依赖
-          childProcess.execSync(`cd ${dirname} && tnpm install ${plugins}`);
+          childProcess.execSync(`cd ${dirname} && npm install ${plugins}`);
         } catch (error) {
           console.log(chalk.red(error));
         }
@@ -140,7 +140,7 @@ const config = async (value, option) => {
     if (option.set === 'loaders') {
       const childProcess = require('child_process');
       const dirname = path.join(__dirname, '../');
-      childProcess.execSync(`cd ${dirname} && tnpm install ${value}`);
+      childProcess.execSync(`cd ${dirname} && npm install ${value}`);
     }
   }
   if (option.get) {
