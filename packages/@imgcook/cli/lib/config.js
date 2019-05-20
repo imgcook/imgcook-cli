@@ -92,7 +92,7 @@ const config = async (value, option) => {
     // 如果配置为空则去设置
     value = 'set';
   }
-  if (value !== 'set' && !option.set && !option.get) {
+  if (value !== 'set' && !option.set && !option.get && !option.remove) {
     console.log(JSON.stringify(configData, null, 2));
   }
   if (value === 'set') {
@@ -137,11 +137,26 @@ const config = async (value, option) => {
       JSON.stringify(configData, null, 2),
       'utf8'
     );
-    if (option.set === 'loaders') {
+    if (option.set === 'loaders' || option.set === 'plugins') {
       const childProcess = require('child_process');
       const dirname = path.join(__dirname, '../');
       childProcess.execSync(`cd ${dirname} && npm install ${value}`);
     }
+    console.log(chalk.green('设置成功。'));
+  }
+  if (option.remove) {
+    remove(configData, option.remove, value);
+    await fse.writeFile(
+      cliConfig.configFile,
+      JSON.stringify(configData, null, 2),
+      'utf8'
+    );
+    if (option.remove === 'loaders' || option.remove === 'plugins') {
+      const childProcess = require('child_process');
+      const dirname = path.join(__dirname, '../');
+      childProcess.execSync(`cd ${dirname} && npm uninstall ${value}`);
+    }
+    console.log(chalk.green('删除成功。'));
   }
   if (option.get) {
     if (option.get) {
@@ -208,3 +223,30 @@ const set = function(target, path, value) {
     obj[fields[l - 1]] = value;
   }
 };
+
+const remove = function(target, path, value) {
+  const fields = path.split('.');
+  let obj = target;
+  const l = fields.length;
+  for (let i = 0; i < l - 1; i++) {
+    const key = fields[i];
+    if (!obj[key]) {
+      obj[key] = {};
+    }
+    obj = obj[key];
+  }
+  const key = fields[l - 1];
+  if (key === 'loaders') {
+    target[key] = removeItem(target[key], value);
+  } else {
+    target[key] = '';
+  }
+
+  return target;
+};
+
+const removeItem = (arr, key) => {
+  arr.splice(arr.findIndex(item => item === key), 1);
+  return arr;
+};
+
