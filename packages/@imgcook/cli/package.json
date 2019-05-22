@@ -40,5 +40,6 @@
   },
   "devDependencies": {
     "chai": "^4.2.0"
-  }
+  },
+  "gitHead": "cc5b79f10d8ab4ddf0d2589621e7cbcee7fc575f"
 }
