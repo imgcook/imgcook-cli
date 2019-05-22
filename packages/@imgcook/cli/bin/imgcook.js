@@ -33,6 +33,15 @@ program
     require('../lib/config')(value, minimist(process.argv.slice(3)));
   });
 
+program
+  .command('install [value]')
+  .description('Install plugin')
+  .option('-n, --name <name>', 'plugin name')
+  .allowUnknownOption()
+  .action(async (value, cmd) => {
+    require('../lib/install')(value, cmd);
+  });
+
 // pull module code
 // node bin/imgcook.js pull 1 --path ./test
 program

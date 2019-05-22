@@ -83,6 +83,7 @@ const inquirer = require('inquirer');
 const chalk = require('chalk');
 const path = require('path');
 const ora = require('ora');
+const childProcess = require('child_process');
 const spinner = ora();
 
 const initConfig = (promptConfig, config) => {
@@ -115,6 +116,10 @@ const config = async (value, option) => {
     // 如果配置为空则去设置
     value = 'set';
   }
+  if (value === 'edit') {
+    childProcess.execSync(`open ${cliConfig.configFile}`);
+    return;
+  }
   if (value !== 'set' && !option.set && !option.get && !option.remove) {
     console.log(JSON.stringify(configData, null, 2));
   }
@@ -124,7 +129,6 @@ const config = async (value, option) => {
       if (!fse.existsSync(`${cliConfig.path}`)) {
         fse.mkdirSync(`${cliConfig.path}`);
       }
-      const childProcess = require('child_process');
       const dirname = path.join(__dirname, '../');
       if (configData.uploadUrl) {
         answers.uploadUrl = configData.uploadUrl;
@@ -138,7 +142,6 @@ const config = async (value, option) => {
       );
       // spinner.start('安装依赖中...');
       const loaders = answers.loaders;
-      let isInstall = true;
       if (loaders.length > 0) {
         try {
           // 安装loader 依赖
@@ -148,7 +151,6 @@ const config = async (value, option) => {
             spinner.succeed(`安装 ${item} 完成...`);
           }
         } catch (error) {
-          isInstall = false;
           spinner.fail(`安装 ${error} 失败。`);
         }
       }
@@ -160,7 +162,6 @@ const config = async (value, option) => {
           childProcess.execSync(`cd ${dirname} && npm install ${plugins}`);
           spinner.succeed(`安装 ${plugins} 完成...`);
         } catch (error) {
-          isInstall = false;
           spinner.fail(`安装 ${plugins} 失败。`);
         }
       }
@@ -174,7 +175,6 @@ const config = async (value, option) => {
       'utf8'
     );
     if (option.set === 'loaders' || option.set === 'plugins') {
-      const childProcess = require('child_process');
       const dirname = path.join(__dirname, '../');
       childProcess.execSync(`cd ${dirname} && npm install ${value}`);
     }
@@ -188,7 +188,6 @@ const config = async (value, option) => {
       'utf8'
     );
     if (option.remove === 'loaders' || option.remove === 'plugins') {
-      const childProcess = require('child_process');
       const dirname = path.join(__dirname, '../');
       childProcess.execSync(`cd ${dirname} && npm uninstall ${value}`);
     }
