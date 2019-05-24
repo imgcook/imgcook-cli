@@ -41,7 +41,10 @@ imgcook config --get <path>
 # 直接打开配置文件编辑
 imgcook config edit
 # 插件安装
-imgcook config install
+imgcook install
+imgcook install loader
+imgcook install plugin
+imgcook install plugin --name <value>
 
 # 设置配置
 imgcook config set

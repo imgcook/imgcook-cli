@@ -15,6 +15,11 @@ const install = async (value, option) => {
   }
   const dirname = path.join(__dirname, '../');
 
+  if (option.name) {
+    installPackage(option.name, dirname);
+    return;
+  }
+
   // 安装loader
   if (value === 'loader') {
     const loaders = configData.loaders;
@@ -25,10 +30,6 @@ const install = async (value, option) => {
   if (value === 'plugin') {
     const plugin = configData.plugin;
     installPackage(plugin, dirname);
-  }
-
-  if (option.name) {
-    installPackage(option.name, dirname);
   }
 
   // 安装loader和plugin
