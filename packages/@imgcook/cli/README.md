@@ -73,6 +73,26 @@ imgcook pull <moduleid> --path <path>
 ```
 注：<br/> 1. moduleid 表示模块 ID，打开模块详情在URL上参数查看如图<br/><img src="https://img.alicdn.com/tfs/TB1wtzsVCzqK1RjSZPxXXc4tVXa-1138-508.png" width="400" /><br/>2. path 表示下载到的文件夹名称
 
+#### imgcook install
+> 安装依赖loader和插件
+
+```shell
+# 默认安装全部
+imgcook install
+
+# 安装全部loader
+imgcook install loader
+
+# 安装全部plugin
+imgcook install plugin
+
+# 安装某个插件(包括loader插件)
+imgcook install plugin --name <value>
+
+# 例子
+imgcook install plugin --name @imgcook/cli-loader-images
+```
+
 ### 选项
 
 #### imgcook --version
