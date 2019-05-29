@@ -9,6 +9,10 @@
   "bin": {
     "imgcook": "bin/imgcook.js"
   },
+  "keywords": [
+    "imgcook",
+    "cli"
+  ],
   "author": "gindis",
   "license": "ISC",
   "dependencies": {
