@@ -96,7 +96,7 @@ const initConfig = (promptConfig, config) => {
       }
     }
   }
-  if (config.loaders.length > 0) {
+  if (config.loaders && config.loaders.length > 0) {
     promptConfig[2].default = config.loaders;
     promptConfig[2].choices = config.loaders;
   }
