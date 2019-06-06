@@ -15,11 +15,6 @@ const install = async (value, option) => {
   }
   const dirname = path.join(__dirname, '../');
 
-  if (option.name) {
-    installPackage(option.name, dirname);
-    return;
-  }
-
   // 安装loader
   if (value === 'loader') {
     const loaders = configData.loaders;
@@ -33,12 +28,16 @@ const install = async (value, option) => {
   }
 
   // 安装loader和plugin
-  if (value !== 'loader' && value !== 'plugin' && typeof option.name === 'function') {
-    const loaders = configData.loaders;
-    installLoader(loaders, dirname);
+  if (value !== 'loader' && value !== 'plugin') {
+    if (typeof option.name === 'function' && value === undefined) {
+      const loaders = configData.loaders;
+      installLoader(loaders, dirname);
 
-    const plugins = configData.plugins;
-    installPackage(plugins, dirname);
+      const plugins = configData.plugins;
+      installPackage(plugins, dirname);
+    } else {
+      installPackage(value, dirname);
+    }
   }
 };
 
