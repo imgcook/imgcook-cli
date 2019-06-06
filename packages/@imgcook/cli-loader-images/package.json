@@ -1,6 +1,6 @@
 {
   "name": "@imgcook/cli-loader-images",
-  "version": "0.0.1-alpha.1",
+  "version": "0.0.2-alpha.2",
   "description": "",
   "main": "index.js",
   "directories": {
@@ -16,7 +16,7 @@
   "author": "gindis",
   "license": "ISC",
   "dependencies": {
-    "@imgcook/cli-utils": "^0.0.1-alpha.1",
+    "@imgcook/cli-utils": "^0.0.2-alpha.2",
     "fs-extra": "^7.0.1",
     "request": "^2.88.0"
   },
