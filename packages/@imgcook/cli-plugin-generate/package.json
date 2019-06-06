@@ -4,10 +4,14 @@
   "description": "imgcook plugin",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/__test__.js"
   },
   "author": "",
   "license": "ISC",
+  "keywords": [
+    "imgcook",
+    "plugin"
+  ],
   "dependencies": {
     "chalk": "^2.4.2",
     "fs-extra": "^7.0.1"

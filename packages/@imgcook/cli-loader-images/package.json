@@ -7,8 +7,12 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/__test__.js"
   },
+  "keywords": [
+    "imgcook",
+    "loader"
+  ],
   "author": "gindis",
   "license": "ISC",
   "dependencies": {
@@ -25,6 +29,7 @@
   },
   "homepage": "https://github.com/imgcook/imgcook-cli#readme",
   "publishConfig": {
+    "registry": "http://registry.npmjs.org/",
     "access": "public"
   }
 }

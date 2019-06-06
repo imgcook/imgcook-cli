@@ -4,7 +4,7 @@
   "description": "imgcook cli utils",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/__test__.js"
   },
   "author": "",
   "license": "ISC",

@@ -5,9 +5,9 @@ const os = require('os');
 exports.homedir = typeof os.homedir === 'function' ? os.homedir : homedir;
 
 function homedir() {
-  var env = process.env;
-  var home = env.HOME;
-  var user = env.LOGNAME || env.USER || env.LNAME || env.USERNAME;
+  const env = process.env;
+  const home = env.HOME;
+  const user = env.LOGNAME || env.USER || env.LNAME || env.USERNAME;
 
   if (process.platform === 'win32') {
     return env.USERPROFILE || env.HOMEDRIVE + env.HOMEPATH || home || null;
