@@ -1,0 +1,19 @@
+os:
+  - linux
+  - osx
+
+language: node_js
+node_js:
+  - '9'
+  - '10'
+
+install:
+  - yarn --network-timeout 600000
+
+test_script:
+  - yarn test
+
+cache:
+  - node_modules -> yarn.lock
+
+build: off

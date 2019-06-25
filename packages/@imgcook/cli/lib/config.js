@@ -145,11 +145,13 @@ const config = async (value, option) => {
     value = 'set';
   }
   if (value === 'edit') {
-    childProcess.execSync(`open ${cliConfig.configFile}`);
+    childProcess.exec(`open ${cliConfig.configFile}`);
     return;
   }
   if (value !== 'set' && !option.set && !option.get && !option.remove) {
-    console.log(JSON.stringify(configData, null, 2));
+    const result = JSON.stringify(configData, null, 2);
+    console.log(result);
+    return result;
   }
   if (value === 'set') {
     promptConfig = initConfig(promptConfig, configData);
@@ -185,7 +187,9 @@ const config = async (value, option) => {
       const dirname = path.join(__dirname, '../');
       childProcess.execSync(`cd ${dirname} && npm install ${value}`);
     }
-    console.log(chalk.green('设置成功。'));
+    const message = chalk.green(`设置 ${option.set} 成功`);
+    console.log(message);
+    return message;
   }
   if (option.remove) {
     remove(configData, option.remove, value);
@@ -198,24 +202,22 @@ const config = async (value, option) => {
       const dirname = path.join(__dirname, '../');
       childProcess.execSync(`cd ${dirname} && npm uninstall ${value}`);
     }
-    console.log(chalk.green('删除成功。'));
+    console.log(chalk.green(`删除 ${option.remove} 成功`));
   }
   if (option.get) {
-    if (option.get) {
-      const value = get(configData, option.get);
-      if (option.json) {
-        console.log(
-          JSON.stringify(
-            {
-              value
-            },
-            null,
-            2
-          )
-        );
-      } else {
-        console.log(value);
-      }
+    const value = get(configData, option.get);
+    if (option.json) {
+      console.log(
+        JSON.stringify(
+          {
+            value
+          },
+          null,
+          2
+        )
+      );
+    } else {
+      console.log(value);
     }
   }
 };
