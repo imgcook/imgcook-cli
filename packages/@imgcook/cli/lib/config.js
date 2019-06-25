@@ -107,6 +107,34 @@ const initConfig = (promptConfig, config) => {
   return promptConfig;
 };
 
+const installLoader = (loaders, dirname) => {
+  if (loaders.length > 0) {
+    try {
+      for (const item of loaders) {
+        spinner.start(`安装依赖中...`);
+        childProcess.exec(`cd ${dirname} && npm install ${item}`, () => {
+          spinner.succeed(`安装 ${item} 完成`);
+        });
+      }
+    } catch (error) {
+      spinner.fail(`安装 ${error} 失败`);
+    }
+  }
+};
+
+const installPlugin = (plugins, dirname) => {
+  if (plugins !== '') {
+    try {
+      spinner.start(`安装依赖中...`);
+      childProcess.exec(`cd ${dirname} && npm install ${plugins}`, () => {
+        spinner.succeed(`安装 ${plugins} 完成`);
+      });
+    } catch (error) {
+      spinner.fail(`安装 ${plugins} 失败`);
+    }
+  }
+};
+
 const config = async (value, option) => {
   let configData = {};
   // 检查是否存在配置文件
@@ -140,31 +168,10 @@ const config = async (value, option) => {
         JSON.stringify(answers, null, 2),
         'utf8'
       );
-      // spinner.start('安装依赖中...');
       const loaders = answers.loaders;
-      if (loaders.length > 0) {
-        try {
-          // 安装loader 依赖
-          for (const item of loaders) {
-            spinner.start(`安装 ${item} 依赖中...`);
-            childProcess.execSync(`cd ${dirname} && npm install ${item}`);
-            spinner.succeed(`安装 ${item} 完成...`);
-          }
-        } catch (error) {
-          spinner.fail(`安装 ${error} 失败。`);
-        }
-      }
+      installLoader(loaders, dirname);
       const plugins = answers.plugins;
-      if (plugins !== '') {
-        try {
-          // 安装plugin 依赖
-          spinner.start(`安装 ${plugins} 依赖中...`);
-          childProcess.execSync(`cd ${dirname} && npm install ${plugins}`);
-          spinner.succeed(`安装 ${plugins} 完成...`);
-        } catch (error) {
-          spinner.fail(`安装 ${plugins} 失败。`);
-        }
-      }
+      installPlugin(plugins, dirname);
     });
   }
   if (option.set && value) {

@@ -47,11 +47,12 @@ const installLoader = (loaders, dirname) => {
       // 安装loader 依赖
       for (const item of loaders) {
         spinner.start(`安装 ${item} 依赖中...`);
-        childProcess.execSync(`cd ${dirname} && npm install ${item}`);
-        spinner.succeed(`安装 ${item} 完成...`);
+        childProcess.exec(`cd ${dirname} && npm install ${item}`, () => {
+          spinner.succeed(`安装 ${item} 完成`);
+        });
       }
     } catch (error) {
-      spinner.fail(`安装 ${error} 失败。`);
+      spinner.fail(`安装 ${error} 失败`);
     }
   }
 };
@@ -63,10 +64,11 @@ const installPackage = (name, dirname) => {
   if (name !== '') {
     try {
       spinner.start(`安装 ${name} 依赖中...`);
-      childProcess.execSync(`cd ${dirname} && npm install ${name}`);
-      spinner.succeed(`安装 ${name} 完成...`);
+      childProcess.exec(`cd ${dirname} && npm install ${name}`, () => {
+        spinner.succeed(`安装 ${name} 完成`);
+      });
     } catch (error) {
-      spinner.fail(`安装 ${name} 失败。`);
+      spinner.fail(`安装 ${name} 失败`);
     }
   }
 };
