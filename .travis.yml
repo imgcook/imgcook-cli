@@ -8,6 +8,7 @@ node_js:
 
 install:
   - yarn --network-timeout 600000
+  - lerna bootstrap
 
 script:
   - yarn test
