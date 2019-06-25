@@ -2,7 +2,6 @@ os:
   - linux
   - osx
 language: node_js
-sudo: false
 node_js:
   - '9'
   - '10'
@@ -18,6 +17,3 @@ install:
 
 script:
   - yarn test
-
-cache:
-  - node_modules -> yarn.lock
