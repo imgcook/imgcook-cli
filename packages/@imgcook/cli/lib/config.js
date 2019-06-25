@@ -140,7 +140,7 @@ const config = async (value, option) => {
   // 检查是否存在配置文件
   if (fse.existsSync(cliConfig.configFile)) {
     configData = await fse.readJson(cliConfig.configFile);
-  } else {
+  } else if (!option.set && !option.get && !option.remove) {
     // 如果配置为空则去设置
     value = 'set';
   }
@@ -177,6 +177,9 @@ const config = async (value, option) => {
     });
   }
   if (option.set && value) {
+    if (!fse.existsSync(`${cliConfig.path}`)) {
+      fse.mkdirSync(`${cliConfig.path}`);
+    }
     set(configData, option.set, value);
     await fse.writeFile(
       cliConfig.configFile,
