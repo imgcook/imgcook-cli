@@ -12,7 +12,6 @@ before_install:
   - yarn global add lerna
 
 install:
-  - yarn --network-timeout 600000
   - lerna bootstrap
 
 script:
