@@ -84,6 +84,9 @@ const pull = async (value, option) => {
     }
     spinner.succeed(`「${moduleData.name}」模块下载完成。`);
   }
+  if (!repoData.success) {
+    console.log(chalk.red(`Error: ${repoData.message}`));
+  }
 };
 
 module.exports = (...args) => {
