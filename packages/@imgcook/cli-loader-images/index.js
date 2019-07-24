@@ -32,6 +32,12 @@ const loader = async (item, option) => {
   if (imgArr && imgArr.length > 0) {
     imgArr = unique(imgArr);
     const imgPath = `${filePath}/images`;
+    let imgObj = [];
+    const imgrc = `${imgPath}/.imgrc`;
+    if (fs.existsSync(imgrc)) {
+      let imgConfig = fs.readFileSync(imgrc, 'utf8');
+      imgObj = JSON.parse(imgConfig) || [];
+    }
     for (let idx = 0; idx < imgArr.length; idx++) {
       if (!fs.existsSync(imgPath)) {
         fs.mkdirSync(imgPath);
@@ -40,18 +46,42 @@ const loader = async (item, option) => {
       suffix = suffix[suffix.length - 1];
       const imgName = `img_${option.moduleData.id}_${index}_${idx}.${suffix}`;
       const imgPathItem = `${imgPath}/${imgName}`;
-      await downloadImg(imgArr[idx], imgPathItem);
-      const reg = new RegExp(imgArr[idx], 'g');
-      if (option.config && option.config.uploadUrl !== '') {
-        const udata = await uploadData(
-          imgPathItem,
-          `imgcook-cli/${temporaryImages}/`,
-          option.config
-        );
-        fileValue = fileValue.replace(reg, udata.url);
-      } else {
-        fileValue = fileValue.replace(reg, `./images/${imgName}`);
+      let curImgObj = {};
+      for (const item of imgObj) {
+        if (item.imgUrl === imgArr[idx]) {
+          curImgObj = item;
+        }
       }
+      const reg = new RegExp(imgArr[idx], 'g');
+      if (!curImgObj.imgPath) {
+        await downloadImg(imgArr[idx], imgPathItem);
+        let newImgUrl = '';
+        if (option.config && option.config.uploadUrl !== '') {
+          const udata = await uploadData(
+            imgPathItem,
+            `imgcook-cli/${temporaryImages}/`,
+            option.config
+          );
+          fileValue = fileValue.replace(reg, udata.url);
+          newImgUrl = udata.url;
+        } else {
+          fileValue = fileValue.replace(reg, `./images/${imgName}`);
+        }
+        imgObj.push({
+          newImgUrl,
+          imgUrl: imgArr[idx],
+          imgPath: `./images/${imgName}`
+        });
+      } else {
+        if (option.config && option.config.uploadUrl !== '') {
+          fileValue = fileValue.replace(reg, curImgObj.newImgUrl);
+        } else {
+          fileValue = fileValue.replace(reg, curImgObj.imgPath);
+        }
+      }
+    }
+    if (imgObj.length > 0) {
+      fs.writeFileSync(imgrc, JSON.stringify(imgObj), 'utf8');
     }
   }
   return fileValue;

@@ -82,6 +82,13 @@ const pull = async (value, option) => {
 
       index++;
     }
+  
+    // delete images/.imgrc
+    const imgrcPath = `${filePath}/images/.imgrc`;
+    if (fs.existsSync(imgrcPath)) {
+      fs.unlinkSync(imgrcPath);
+    }
+
     spinner.succeed(`「${moduleData.name}」模块下载完成。`);
   }
   if (!repoData.success) {
