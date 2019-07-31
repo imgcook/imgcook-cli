@@ -12,12 +12,16 @@ const dsl = [
     id: '29'
   },
   {
-    name: '微信小程序开发规范',
-    id: '21'
+    name: '支付宝小程序开发规范',
+    id: '79'
   },
   {
     name: 'Rax 标准开发规范',
     id: '1'
+  },
+  {
+    name: '微信小程序开发规范',
+    id: '21'
   }
 ];
 let curDslId = '12';
@@ -31,13 +35,14 @@ let promptConfig = [
   {
     type: 'list',
     name: 'dslId',
-    message: 'Dsl',
+    message: 'DSL',
     choices: [
       'H5 标准开发规范',
       'React 开发规范',
       'Vue 开发规范',
-      '微信小程序开发规范',
-      'Rax 标准开发规范'
+      '支付宝小程序开发规范',
+      'Rax 标准开发规范',
+      '微信小程序开发规范'
     ],
     default: '',
     filter: val => {
