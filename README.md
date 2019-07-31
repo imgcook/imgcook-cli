@@ -135,7 +135,7 @@ loader： `@imgcook/loader-xx`  plugin: `@imgcook/plugin-xx` <br />
 
 /**
  * @param fileValue: 文件内容，生成的代码
- * @param option: { filePath, index, config }
+ * @param option: { item, filePath, index, config }
  */
 const loaderExample = async (fileValue, option) => {
   return fileValue;
