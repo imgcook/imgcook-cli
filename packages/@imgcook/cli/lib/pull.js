@@ -54,7 +54,8 @@ const pull = async (value, option) => {
         let fileValue = item.panelValue;
         if (loaders.length > 0) {
           for (const loaderItem of loaders) {
-            fileValue = await require(loaderItem)(item, {
+            fileValue = await require(loaderItem)(fileValue, {
+              item,
               filePath,
               index,
               config: configData,
@@ -89,10 +90,14 @@ const pull = async (value, option) => {
       fs.unlinkSync(imgrcPath);
     }
 
-    spinner.succeed(`「${moduleData.name}」模块下载完成。`);
+    spinner.succeed(`「${moduleData.name}」模块下载完成`);
   }
   if (!repoData.success) {
-    console.log(chalk.red(`Error: ${repoData.message}`));
+    if (repoData.code && repoData.code.message) {
+      console.log(chalk.red(`Error: ${repoData.code.message}`));
+    } else {
+      console.log(chalk.red(`Error: ${repoData.message}`));
+    }
   }
 };
 

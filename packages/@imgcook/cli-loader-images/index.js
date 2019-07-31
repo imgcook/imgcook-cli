@@ -19,9 +19,8 @@ const uploadData = (file, filepath, option) => {
   });
 };
 
-const loader = async (item, option) => {
+const loader = async (fileValue, option) => {
   let imgArr = [];
-  let fileValue = item.panelValue;
   const { filePath, index } = option;
   const temporaryImages = `${(
     new Date().getTime() + Math.floor(Math.random() * 10000)
