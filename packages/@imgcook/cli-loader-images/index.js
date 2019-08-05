@@ -64,7 +64,9 @@ const loader = async (fileValue, option) => {
           fileValue = fileValue.replace(reg, udata.url);
           newImgUrl = udata.url;
         } else {
-          fileValue = fileValue.replace(reg, `./images/${imgName}`);
+          // 如果引用本地路径，使用 require 引用
+          const regex = new RegExp(`"${imgArr[idx]}"`, 'g');
+          fileValue = fileValue.replace(regex, `require('./images/${imgName}')`);
         }
         imgObj.push({
           newImgUrl,
@@ -86,6 +88,6 @@ const loader = async (fileValue, option) => {
   return fileValue;
 };
 
-module.exports = function(item, option) {
+module.exports = function (item, option) {
   return loader(item, option);
 };
