@@ -63,6 +63,13 @@ const loader = async (fileValue, option) => {
           );
           fileValue = fileValue.replace(reg, udata.url);
           newImgUrl = udata.url;
+        } else if (
+          option.moduleData &&
+          option.moduleData.dsl === 'react-taobao-standard'
+        ) {
+          // 如果在 react 标准下引用本地路径图片，使用 require 引用
+          const regex = new RegExp(`"${imgArr[idx]}"`, 'g');
+          fileValue = fileValue.replace(regex, `require('./images/${imgName}')`);
         } else {
           fileValue = fileValue.replace(reg, `./images/${imgName}`);
         }
@@ -86,6 +93,6 @@ const loader = async (fileValue, option) => {
   return fileValue;
 };
 
-module.exports = function(item, option) {
+module.exports = function (item, option) {
   return loader(item, option);
 };
