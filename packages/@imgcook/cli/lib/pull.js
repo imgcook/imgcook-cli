@@ -54,13 +54,15 @@ const pull = async (value, option) => {
         let fileValue = item.panelValue;
         if (loaders.length > 0) {
           for (const loaderItem of loaders) {
-            fileValue = await require(loaderItem)(fileValue, {
-              item,
-              filePath,
-              index,
-              config: configData,
-              moduleData,
-            });
+            if (!fileValue.match('.alicdn.com/tfs/')) {
+              fileValue = await require(loaderItem)(fileValue, {
+                item,
+                filePath,
+                index,
+                config: configData,
+                moduleData,
+              });
+            }
           }
         }
         const plugin = configData.plugins;
@@ -68,6 +70,7 @@ const pull = async (value, option) => {
           try {
             backData = await require(plugin)(fileValue, {
               filePath,
+              item,
               panelName: item.panelName,
             });
             pullFileMsg.push(backData);
