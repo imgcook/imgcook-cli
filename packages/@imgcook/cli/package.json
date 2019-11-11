@@ -1,6 +1,6 @@
 {
   "name": "@imgcook/cli",
-  "version": "0.0.3-alpha.0",
+  "version": "0.0.3-alpha.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "@imgcook/cli-loader-images": "0.0.3-alpha.0",
-    "@imgcook/cli-plugin-generate": "0.0.2-alpha.2",
+    "@imgcook/cli-plugin-generate": "^0.0.3-alpha.1",
     "@imgcook/cli-utils": "^0.0.2-alpha.2",
     "chalk": "^2.4.2",
     "commander": "^2.19.0",
