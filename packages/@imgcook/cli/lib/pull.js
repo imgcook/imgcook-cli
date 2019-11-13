@@ -10,7 +10,7 @@ const { ajaxPost, writeFile, cliConfig } = require('./helper');
 const pull = async (value, option) => {
   let filePath = cwd;
   if (option.path) {
-    filePath = path.join(cwd, option.path);
+    filePath = path.isAbsolute(option.path) ? option.path : path.join(cwd, option.path);
   }
   if(!fs.existsSync(cliConfig.configFile)) {
     console.log("请先设置配置，执行`imgcook config set`");
