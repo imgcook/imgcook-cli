@@ -52,12 +52,12 @@ imgcook config set
 # 设置单个配置
 imgcook config --set <path> <value>
 # 例子
-imgcook config --set loaders @imgcook/cli-loader-images
+imgcook config --set loader @imgcook/cli-loader-images
 
 # 移除loaders里插件
 imgcook config --remove <path> <value>
 # 例子
-imgcook config --remove loaders @imgcook/cli-loader-images
+imgcook config --remove loader @imgcook/cli-loader-images
 
 ```
 注：<br/> 1. Access ID 可以在 https://imgcook.taobao.org 上点击头像 》用户信息 查看

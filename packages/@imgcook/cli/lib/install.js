@@ -10,44 +10,48 @@ const spinner = ora();
 
 const install = async (value, option) => {
   let configData = {};
+  const imgcookModulesPath = cliConfig.imgcookModules;
   if (fse.existsSync(cliConfig.configFile)) {
     configData = await fse.readJson(cliConfig.configFile);
   }
-  const dirname = path.join(__dirname, '../');
+
+  if (!fse.existsSync(`${imgcookModulesPath}`)) {
+    fse.mkdirSync(`${imgcookModulesPath}`);
+  }
 
   // 安装loader
   if (value === 'loader') {
-    const loaders = configData.loaders;
-    installLoader(loaders, dirname);
+    const loader = configData.loader;
+    installLoader(loader, imgcookModulesPath);
   }
 
   // 安装plugin
   if (value === 'plugin') {
     const plugin = configData.plugin;
-    installPackage(plugin, dirname);
+    installPackage(plugin, imgcookModulesPath);
   }
 
   // 安装loader和plugin
   if (value !== 'loader' && value !== 'plugin') {
     if (typeof option.name === 'function' && value === undefined) {
-      const loaders = configData.loaders;
-      installLoader(loaders, dirname);
+      const loader = configData.loader;
+      installLoader(loader, imgcookModulesPath);
 
-      const plugins = configData.plugins;
-      installPackage(plugins, dirname);
+      const plugin = configData.plugin;
+      installPackage(plugin, imgcookModulesPath);
     } else {
-      installPackage(value, dirname);
+      installPackage(value, imgcookModulesPath);
     }
   }
 };
 
-const installLoader = (loaders, dirname) => {
-  if (loaders && loaders.length > 0) {
+const installLoader = (loader, dirname) => {
+  if (loader && loader.length > 0) {
     try {
       // 安装loader 依赖
-      for (const item of loaders) {
+      for (const item of loader) {
         spinner.start(`安装 ${item} 依赖中...`);
-        childProcess.exec(`cd ${dirname} && npm install ${item}`, () => {
+        childProcess.exec(`npm install --prefix ${imgcookModulesPath} ${item}`, () => {
           spinner.succeed(`安装 ${item} 完成`);
         });
       }
@@ -64,7 +68,7 @@ const installPackage = (name, dirname) => {
   if (name !== '') {
     try {
       spinner.start(`安装 ${name} 依赖中...`);
-      childProcess.exec(`cd ${dirname} && npm install ${name}`, () => {
+      childProcess.exec(`npm install --prefix ${imgcookModulesPath} ${name}`, () => {
         spinner.succeed(`安装 ${name} 完成`);
       });
     } catch (error) {
