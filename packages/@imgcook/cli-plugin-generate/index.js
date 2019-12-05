@@ -50,7 +50,6 @@ const generatePlugin = async (value, option) => {
     ...option,
     message: 'succeed'
   };
-
 };
 
 module.exports = (...args) => {

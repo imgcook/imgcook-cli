@@ -21,7 +21,7 @@ const minimist = require('minimist');
 program.version(pkg.version, '-v, --version').usage('<command> [options]');
 
 // Config
-// node bin/imgcook.js config xx
+// node bin/imgcook.js config <value>
 program
   .command('config [value]')
   .description('Inspect and modify the imgcook config')

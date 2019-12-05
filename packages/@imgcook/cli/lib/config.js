@@ -131,6 +131,10 @@ const config = async (value, option) => {
   let configData = {};
   const imgcookModulesPath = cliConfig.imgcookModules;
 
+  if (!fse.existsSync(`${cliConfig.path}`)) {
+    fse.mkdirSync(`${cliConfig.path}`);
+  }
+
   // 检查是否存在配置文件
   if (fse.existsSync(cliConfig.configFile)) {
     configData = await fse.readJson(cliConfig.configFile);
