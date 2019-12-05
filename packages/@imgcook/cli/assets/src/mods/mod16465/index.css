@@ -1,0 +1,62 @@
+.mod16465, .block {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 12px;
+  background-color: #ffffff;
+  width: 702px;
+  height: 414px;
+  overflow: hidden;
+}
+.mod16465 .pic {
+  margin-top: 45px;
+  width: 118px;
+  height: 118px;
+}
+.mod16465 .imgcook {
+  margin-top: 10px;
+  max-width: 414px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 40px;
+  white-space: nowrap;
+  color: #333333;
+  font-size: 36px;
+  font-weight: 600;
+  lines: 1;
+}
+.mod16465 .info {
+  margin-top: 38px;
+  max-width: 474px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 24px;
+  white-space: pre;
+  color: #999999;
+  font-size: 20px;
+  font-weight: 400;
+  lines: 1;
+}
+.mod16465 .info_2 {
+  max-width: 413px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 24px;
+  white-space: nowrap;
+  color: #999999;
+  font-size: 20px;
+  font-weight: 400;
+  lines: 1;
+}
+.mod16465 .desc {
+  margin-top: 62px;
+  max-width: 521px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 24px;
+  white-space: pre;
+  color: #d4d4d4;
+  font-size: 20px;
+  font-weight: 400;
+  lines: 1;
+}
