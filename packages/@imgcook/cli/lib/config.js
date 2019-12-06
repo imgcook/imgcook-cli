@@ -209,7 +209,9 @@ const config = async (value, option) => {
     );
     if (option.remove === 'loader' || option.remove === 'plugin') {
       try {
-        childProcess.execSync(`cd ${imgcookModulesPath}/node_modules && rm -rf ${value}`);
+        childProcess.execSync(
+          `cd ${imgcookModulesPath}/node_modules && rm -rf ${value}`
+        );
       } catch (error) {
         console.error(error);
       }
@@ -302,6 +304,9 @@ const remove = function(target, path, value) {
 };
 
 const removeItem = (arr, key) => {
-  arr.splice(arr.findIndex(item => item === key), 1);
+  arr.splice(
+    arr.findIndex(item => item === key),
+    1
+  );
   return arr;
 };

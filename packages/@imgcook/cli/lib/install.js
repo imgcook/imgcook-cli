@@ -1,4 +1,3 @@
-
 const chalk = require('chalk');
 const fse = require('fs-extra');
 const childProcess = require('child_process');
@@ -51,9 +50,12 @@ const installLoader = (loader, dirname) => {
       // 安装loader 依赖
       for (const item of loader) {
         spinner.start(`安装 ${item} 依赖中...`);
-        childProcess.exec(`npm install --prefix ${imgcookModulesPath} ${item}`, () => {
-          spinner.succeed(`安装 ${item} 完成`);
-        });
+        childProcess.exec(
+          `npm install --prefix ${imgcookModulesPath} ${item}`,
+          () => {
+            spinner.succeed(`安装 ${item} 完成`);
+          }
+        );
       }
     } catch (error) {
       spinner.fail(`安装 ${error} 失败`);
@@ -68,9 +70,12 @@ const installPackage = (name, dirname) => {
   if (name !== '') {
     try {
       spinner.start(`安装 ${name} 依赖中...`);
-      childProcess.exec(`npm install --prefix ${imgcookModulesPath} ${name}`, () => {
-        spinner.succeed(`安装 ${name} 完成`);
-      });
+      childProcess.exec(
+        `npm install --prefix ${imgcookModulesPath} ${name}`,
+        () => {
+          spinner.succeed(`安装 ${name} 完成`);
+        }
+      );
     } catch (error) {
       spinner.fail(`安装 ${name} 失败`);
     }
