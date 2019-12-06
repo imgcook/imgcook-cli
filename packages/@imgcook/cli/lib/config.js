@@ -56,26 +56,14 @@ let promptConfig = [
   },
   {
     type: 'checkbox',
-    name: 'loaders',
-    message: 'Loaders',
+    name: 'loader',
+    message: 'Loader',
     default: ['@imgcook/cli-loader-images'],
     choices: ['@imgcook/cli-loader-images']
-    // filter: val => {
-    //   const loaders = [];
-    //   for (const item of val) {
-    //     loaders.push({
-    //       option: {
-    //         uploadUrl: ''
-    //       },
-    //       loader: item,
-    //     });
-    //   }
-    //   return loaders;
-    // }
   },
   {
     type: 'list',
-    name: 'plugins',
+    name: 'plugin',
     message: 'Plugin',
     default: ['@imgcook/cli-plugin-generate'],
     choices: ['@imgcook/cli-plugin-generate']
@@ -86,7 +74,6 @@ const fse = require('fs-extra');
 const { cliConfig } = require('./helper');
 const inquirer = require('inquirer');
 const chalk = require('chalk');
-const path = require('path');
 const ora = require('ora');
 const childProcess = require('child_process');
 const spinner = ora();
@@ -101,23 +88,23 @@ const initConfig = (promptConfig, config) => {
       }
     }
   }
-  if (config.loaders && config.loaders.length > 0) {
-    promptConfig[2].default = config.loaders;
-    promptConfig[2].choices = config.loaders;
+  if (config.loader && config.loader.length > 0) {
+    promptConfig[2].default = config.loader;
+    promptConfig[2].choices = config.loader;
   }
-  if (config.plugins) {
-    promptConfig[3].default = config.plugins;
-    promptConfig[3].default = config.plugins;
+  if (config.plugin) {
+    promptConfig[3].default = config.plugin;
+    promptConfig[3].default = config.plugin;
   }
   return promptConfig;
 };
 
-const installLoader = (loaders, dirname) => {
-  if (loaders.length > 0) {
+const installLoader = (loader, dirname) => {
+  if (loader.length > 0) {
     try {
-      for (const item of loaders) {
+      for (const item of loader) {
         spinner.start(`安装依赖中...`);
-        childProcess.exec(`cd ${dirname} && npm install ${item}`, () => {
+        childProcess.exec(`npm install --prefix ${dirname} ${item}`, () => {
           spinner.succeed(`安装 ${item} 完成`);
         });
       }
@@ -127,21 +114,27 @@ const installLoader = (loaders, dirname) => {
   }
 };
 
-const installPlugin = (plugins, dirname) => {
-  if (plugins !== '') {
+const installPlugin = (plugin, dirname) => {
+  if (plugin) {
     try {
       spinner.start(`安装依赖中...`);
-      childProcess.exec(`cd ${dirname} && npm install ${plugins}`, () => {
-        spinner.succeed(`安装 ${plugins} 完成`);
+      childProcess.exec(`npm install --prefix ${dirname} ${plugin}`, () => {
+        spinner.succeed(`安装 ${plugin} 完成`);
       });
     } catch (error) {
-      spinner.fail(`安装 ${plugins} 失败`);
+      spinner.fail(`安装 ${plugin} 失败`);
     }
   }
 };
 
 const config = async (value, option) => {
   let configData = {};
+  const imgcookModulesPath = cliConfig.imgcookModules;
+
+  if (!fse.existsSync(`${cliConfig.path}`)) {
+    fse.mkdirSync(`${cliConfig.path}`);
+  }
+
   // 检查是否存在配置文件
   if (fse.existsSync(cliConfig.configFile)) {
     configData = await fse.readJson(cliConfig.configFile);
@@ -149,22 +142,31 @@ const config = async (value, option) => {
     // 如果配置为空则去设置
     value = 'set';
   }
+
+  if (!fse.existsSync(`${imgcookModulesPath}`)) {
+    fse.mkdirSync(`${imgcookModulesPath}`);
+  }
+
+  // 编辑
   if (value === 'edit') {
     childProcess.exec(`open ${cliConfig.configFile}`);
     return;
   }
+
+  // 不存在指令
   if (value !== 'set' && !option.set && !option.get && !option.remove) {
     const result = JSON.stringify(configData, null, 2);
     console.log(result);
     return result;
   }
+
+  // 设置
   if (value === 'set') {
     promptConfig = initConfig(promptConfig, configData);
     inquirer.prompt(promptConfig).then(async answers => {
       if (!fse.existsSync(`${cliConfig.path}`)) {
         fse.mkdirSync(`${cliConfig.path}`);
       }
-      const dirname = path.join(__dirname, '../');
       if (configData.uploadUrl) {
         answers.uploadUrl = configData.uploadUrl;
       } else {
@@ -175,10 +177,10 @@ const config = async (value, option) => {
         JSON.stringify(answers, null, 2),
         'utf8'
       );
-      const loaders = answers.loaders;
-      installLoader(loaders, dirname);
-      const plugins = answers.plugins;
-      installPlugin(plugins, dirname);
+      const loader = answers.loader;
+      installLoader(loader, imgcookModulesPath);
+      const plugin = answers.plugin;
+      installPlugin(plugin, imgcookModulesPath);
     });
   }
   if (option.set && value) {
@@ -191,11 +193,10 @@ const config = async (value, option) => {
       JSON.stringify(configData, null, 2),
       'utf8'
     );
-    if (option.set === 'loaders' || option.set === 'plugins') {
-      const dirname = path.join(__dirname, '../');
-      childProcess.execSync(`cd ${dirname} && npm install ${value}`);
+    if (option.set === 'loader' || option.set === 'plugin') {
+      installLoader([value], imgcookModulesPath);
     }
-    const message = chalk.green(`设置 ${option.set} 成功`);
+    const message = chalk.green(`设置 ${value} 成功`);
     console.log(message);
     return message;
   }
@@ -206,11 +207,14 @@ const config = async (value, option) => {
       JSON.stringify(configData, null, 2),
       'utf8'
     );
-    if (option.remove === 'loaders' || option.remove === 'plugins') {
-      const dirname = path.join(__dirname, '../');
-      childProcess.execSync(`cd ${dirname} && npm uninstall ${value}`);
+    if (option.remove === 'loader' || option.remove === 'plugin') {
+      try {
+        childProcess.execSync(`cd ${imgcookModulesPath}/node_modules && rm -rf ${value}`);
+      } catch (error) {
+        console.error(error);
+      }
     }
-    console.log(chalk.green(`删除 ${option.remove} 成功`));
+    console.log(chalk.green(`删除 ${value} 成功`));
   }
   if (option.get) {
     const value = get(configData, option.get);
@@ -261,7 +265,7 @@ const set = function(target, path, value) {
     }
     obj = obj[key];
   }
-  if (fields[l - 1] === 'loaders') {
+  if (fields[l - 1] === 'loader') {
     if (obj[fields[l - 1]].length > 0) {
       for (const item of obj[fields[l - 1]]) {
         if (item !== value) {
@@ -288,7 +292,7 @@ const remove = function(target, path, value) {
     obj = obj[key];
   }
   const key = fields[l - 1];
-  if (key === 'loaders') {
+  if (key === 'loader') {
     target[key] = removeItem(target[key], value);
   } else {
     target[key] = '';

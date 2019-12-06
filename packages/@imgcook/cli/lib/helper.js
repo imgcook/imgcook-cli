@@ -53,9 +53,11 @@ const { homedir } = require('@imgcook/cli-utils');
 const userhome = homedir();
 const imgcookConfigPath = `${userhome}/.imgcook`;
 const imgcookRc = `${imgcookConfigPath}/.imgcookrc`;
+const imgcookModules = `${imgcookConfigPath}/imgcook_modules`;
 const cliConfig = {
   path: imgcookConfigPath,
   configFile: imgcookRc,
+  imgcookModules,
   module: {
     url: 'https://imgcook.taobao.org/api-open/code-acquire'
   }

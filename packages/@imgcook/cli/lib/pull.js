@@ -33,7 +33,8 @@ const pull = async (value, option) => {
   }
   let configData = fs.readFileSync(cliConfig.configFile, 'UTF-8');
   configData = JSON.parse(configData);
-  let url = cliConfig.module.url;
+  const url = cliConfig.module.url;
+  const imgcookModulesPath = cliConfig.imgcookModules;
   const repoData = await ajaxPost(url, {
     data: {
       dsl_id: configData.dslId,
@@ -52,15 +53,15 @@ const pull = async (value, option) => {
     for (const item of repoData.data.code.panelDisplay) {
       try {
         // execute loader
-        const loaders = configData.loaders;
+        const loader = configData.loader;
         /**
          * fileValue string
          */
         let fileValue = item.panelValue;
-        if (loaders.length > 0) {
-          for (const loaderItem of loaders) {
-            if (fileValue && !fileValue.match('.alicdn.com/tfs/')) {
-              fileValue = await require(loaderItem)(fileValue, {
+        if (loader.length > 0) {
+          for (const loaderItem of loader) {
+            if (!fileValue.match('.alicdn.com/tfs/')) {
+              fileValue = await require(`${imgcookModulesPath}/node_modules/${loaderItem}`)(fileValue, {
                 item,
                 filePath,
                 index,
@@ -70,10 +71,10 @@ const pull = async (value, option) => {
             }
           }
         }
-        const plugin = configData.plugins;
-        if (plugin !== '') {
+        const plugin = configData.plugin;
+        if (plugin) {
           try {
-            backData = await require(plugin)(fileValue, {
+            backData = await require(`${imgcookModulesPath}/node_modules/${plugin}`)(fileValue, {
               filePath,
               item,
               panelName: item.panelName,
