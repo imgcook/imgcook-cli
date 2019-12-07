@@ -16,6 +16,7 @@
   "author": "gindis",
   "license": "ISC",
   "dependencies": {
+    "@imgcook/cli-plugin-react": "0.0.1",
     "@imgcook/cli-utils": "^0.0.2-alpha.2",
     "chalk": "^2.4.2",
     "commander": "^2.19.0",

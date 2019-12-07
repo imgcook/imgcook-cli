@@ -48,10 +48,21 @@ program
   .command('pull <moduleid>')
   .description('Pull module code from imgcook')
   .option('-p, --path <path>', 'Absolute or relative path')
-  .option('-a, --app', 'Pull module into `mod` folder while your are in imgcook-app')
+  .option(
+    '-a, --app',
+    'Pull module into `mod` folder while your are in imgcook-app'
+  )
   .allowUnknownOption()
   .action(async (value, cmd) => {
     require('../lib/pull')(value, cmd);
+  });
+
+program
+  .command('init')
+  .description('generate a new project from a template')
+  .allowUnknownOption()
+  .action(async (value, cmd) => {
+    require('../lib/init')(value, cmd);
   });
 
 program
@@ -59,7 +70,7 @@ program
   .description('Init your imgcook‘s preview app')
   .allowUnknownOption()
   .action(async (value, cmd) => {
-    require('../lib/init')(value, cmd);
+    require('../lib/init-app')(value, cmd);
   });
 
 // Output help information on unknown commands

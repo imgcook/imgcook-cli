@@ -28,7 +28,7 @@ yarn global add @imgcook/cli
 
 ```shell
 
-# 显示配置如 { accessId: 'kR1ds13cJ1wT8CcJ', 'dslId': 1, loaders: ["@imgcook/cli-loader-images" ...], "plugins": "@imgcook/cli-plugin-generate", uploadUrl: '',}
+# 显示配置如 { accessId: 'kR1ds13cJ1wT8CcJ', 'dslId': 1, "initPlugin": ["@imgcook/cli-loader-images" ...], "addPlugin": "@imgcook/cli-plugin-generate", uploadUrl: '',}
 #
 # 各模版对应的id
 # Vue 开发规范: 29,
@@ -69,7 +69,7 @@ imgcook config --remove loader @imgcook/cli-loader-images
 注：<br/> 1. Access ID 可以在 https://imgcook.taobao.org 上点击头像 》用户信息 查看
 <img src="https://img.alicdn.com/tfs/TB1rK6HU4YaK1RjSZFnXXa80pXa-1122-568.png" width="561" /><br/> 2. dslId 表示 DSL(Domain Specific Language) id，可以在[dsl 列表页](https://imgcook.taobao.org/dsl)上 hover 到更新时间上查看如图:<img src="https://img.alicdn.com/tfs/TB1injJXxiH3KVjSZPfXXXBiVXa-528-424.png" width="200" /> <br/>3. loaders 表示加载预处理文件插件列表，可以添加自定义的 loader <br/> 4. plugins 表示对整个文件操作插件<br/> 5. uploadUrl 表示上传接口，需要和`@imgcook/cli-loader-images`一起使用, 可通过 `imgcook config --set <path> <value>` 配置
 
-#### imgcook init-app
+#### imgcook init 
 
 > 初始化 react 预览应用
 
@@ -79,7 +79,7 @@ imgcook init-app
 ```
 
 注：<br/> 1. 执行 init-app 后会在当前目录下新建一个用于预览官方 react-hooks-standard DSL 的 imgcook-app 项目。<br/><img src="https://gw.alicdn.com/tfs/TB1wxZIoKbviK0jSZFNXXaApXXa-434-329.png" width="400" /><br/>2. 执行 `cd imgcook-app && yarn install && yarn start` 来启动预览项目。<br/>3. 您可以将 react-hooks-standard 设定为您的预览 DSL，`imgcook config --set dslId 177`。<br/>4. 执行 `imgcook pull -a <moduleId>`, 打开 [http://localhost:3000](http://localhost:3000) 即可预览您的模块。
-<br/>2
+<br/>
 
 #### imgcook pull
 
