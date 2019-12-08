@@ -5,11 +5,10 @@ const fs = require('fs');
 const spinner = ora();
 const cwd = process.cwd();
 
-const { ajaxPost, writeFile, cliConfig } = require('./helper');
+const { ajaxPost, cliConfig } = require('./helper');
 
 const pull = async (value, option) => {
   let filePath = cwd;
-  let inApp = option.app; // 是否处于 imgcook app 模式
 
   if (option.path) {
     filePath = path.isAbsolute(option.path)
@@ -46,61 +45,30 @@ const pull = async (value, option) => {
       mod_id: value
     }
   });
-  if (repoData.data && repoData.data.code) {
-    const moduleData = repoData.data.moduleData;
-    spinner.start(`「${moduleData.name}」模块下载中...`);
-    let index = 0;
+  if (repoData.data) {
+    let data = repoData.data;
+    const moduleData = data.moduleData;
+    let errorData;
+    moduleData && spinner.start(`「${moduleData.name}」模块下载中...`);
     if (!fs.existsSync(filePath)) {
       fs.mkdirSync(filePath);
     }
-    let pullFileMsg = [];
-    for (const item of repoData.data.code.panelDisplay) {
-      try {
-        // execute loader
-        const loader = configData.loader;
-        /**
-         * fileValue string
-         */
-        let fileValue = item.panelValue;
-        if (loader.length > 0) {
-          for (const loaderItem of loader) {
-            if (!fileValue.match('.alicdn.com/tfs/')) {
-              fileValue = await require(`${imgcookModulesPath}/node_modules/${loaderItem}`)(
-                fileValue,
-                {
-                  item,
-                  filePath,
-                  index,
-                  config: configData,
-                  moduleData
-                }
-              );
-            }
-          }
-        }
-        const plugin = configData.plugin;
-        if (plugin) {
-          try {
-            backData = await require(`${imgcookModulesPath}/node_modules/${plugin}`)(
-              fileValue,
-              {
-                filePath,
-                item,
-                panelName: item.panelName
-              }
-            );
-            pullFileMsg.push(backData);
-          } catch (error) {
-            console.log(chalk.red(error));
-          }
-        } else {
-          await writeFile(fileValue, `${filePath}/${item.panelName}`, 'utf8');
-        }
-      } catch (error) {
-        console.log(chalk.red(`execute code error: ${error}`));
-      }
 
-      index++;
+    try {
+      // execute plugin
+      const plugin = configData.plugin || [];
+      if (plugin.length > 0) {
+        for (const pluginItem of plugin) {
+          const pluginItemPath = `${imgcookModulesPath}/node_modules/${pluginItem}`;
+          data = await require(pluginItemPath)({
+            data,
+            filePath,
+            config: configData
+          });
+        }
+      }
+    } catch (error) {
+      errorData = error;
     }
 
     // delete images/.imgrc
@@ -132,7 +100,12 @@ const pull = async (value, option) => {
       }
     }
 
-    spinner.succeed(`「${moduleData.name}」模块下载完成`);
+    if (!errorData) {
+      moduleData && spinner.succeed(`「${moduleData.name}」模块下载完成`);
+    } else {
+      spinner.fail(`「${moduleData.name}」模块下载失败`);
+      console.error(errorData);
+    }
   }
   if (!repoData.success) {
     if (repoData.code && repoData.code.message) {

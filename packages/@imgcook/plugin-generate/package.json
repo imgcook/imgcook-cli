@@ -1,0 +1,23 @@
+{
+  "name": "@imgcook/plugin-generate",
+  "version": "0.0.1",
+  "description": "imgcook plugin",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test/__test__.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "keywords": [
+    "imgcook",
+    "plugin"
+  ],
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "fs-extra": "^7.0.1"
+  },
+  "publishConfig": {
+    "registry": "http://registry.npmjs.org/",
+    "access": "public"
+  }
+}

@@ -56,27 +56,26 @@ let promptConfig = [
   },
   {
     type: 'checkbox',
-    name: 'loader',
-    message: 'Loader',
-    default: ['@imgcook/cli-loader-images'],
-    choices: ['@imgcook/cli-loader-images']
+    name: 'generator',
+    message: 'Generator',
+    default: ['@imgcook/generator-react'],
+    choices: ['@imgcook/generator-react']
   },
   {
-    type: 'list',
+    type: 'checkbox',
     name: 'plugin',
     message: 'Plugin',
-    default: ['@imgcook/cli-plugin-generate'],
-    choices: ['@imgcook/cli-plugin-generate']
+    default: ['@imgcook/plugin-images', '@imgcook/plugin-generate'],
+    choices: ['@imgcook/plugin-images', '@imgcook/plugin-generate']
   }
 ];
 
 const fse = require('fs-extra');
-const { cliConfig } = require('./helper');
+const { cliConfig, installPlugin } = require('./helper');
 const inquirer = require('inquirer');
 const chalk = require('chalk');
 const ora = require('ora');
 const childProcess = require('child_process');
-const spinner = ora();
 
 const initConfig = (promptConfig, config) => {
   config.accessId && (promptConfig[0].default = config.accessId);
@@ -88,43 +87,15 @@ const initConfig = (promptConfig, config) => {
       }
     }
   }
-  if (config.loader && config.loader.length > 0) {
-    promptConfig[2].default = config.loader;
-    promptConfig[2].choices = config.loader;
-  }
+  // if (config.loader && config.loader.length > 0) {
+  //   promptConfig[2].default = config.loader;
+  //   promptConfig[2].choices = config.loader;
+  // }
   if (config.plugin) {
     promptConfig[3].default = config.plugin;
     promptConfig[3].default = config.plugin;
   }
   return promptConfig;
-};
-
-const installLoader = (loader, dirname) => {
-  if (loader.length > 0) {
-    try {
-      for (const item of loader) {
-        spinner.start(`安装依赖中...`);
-        childProcess.exec(`npm install --prefix ${dirname} ${item}`, () => {
-          spinner.succeed(`安装 ${item} 完成`);
-        });
-      }
-    } catch (error) {
-      spinner.fail(`安装 ${error} 失败`);
-    }
-  }
-};
-
-const installPlugin = (plugin, dirname) => {
-  if (plugin) {
-    try {
-      spinner.start(`安装依赖中...`);
-      childProcess.exec(`npm install --prefix ${dirname} ${plugin}`, () => {
-        spinner.succeed(`安装 ${plugin} 完成`);
-      });
-    } catch (error) {
-      spinner.fail(`安装 ${plugin} 失败`);
-    }
-  }
 };
 
 const config = async (value, option) => {
@@ -177,9 +148,9 @@ const config = async (value, option) => {
         JSON.stringify(answers, null, 2),
         'utf8'
       );
-      const loader = answers.loader;
-      installLoader(loader, imgcookModulesPath);
-      const plugin = answers.plugin;
+      const generator = answers.generator || [];
+      let plugin = answers.plugin || [];
+      plugin = plugin.concat(generator);
       installPlugin(plugin, imgcookModulesPath);
     });
   }

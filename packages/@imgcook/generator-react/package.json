@@ -1,5 +1,5 @@
 {
-  "name": "@imgcook/cli-plugin-react",
+  "name": "@imgcook/generator-react",
   "version": "0.0.1",
   "description": "generate a new project from a react template",
   "main": "index.js",

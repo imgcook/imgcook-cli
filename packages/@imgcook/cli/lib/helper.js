@@ -1,8 +1,10 @@
 const request = require('request');
 const fs = require('fs');
 const chalk = require('chalk');
+const ora = require('ora');
 const childProcess = require('child_process');
 
+const spinner = ora();
 // Post请求
 const ajaxPost = (url, param) => {
   return new Promise(resolve => {
@@ -79,11 +81,28 @@ function cleanArgs(cmd) {
   return args;
 }
 
+const installPlugin = (plugin, dirname) => {
+  if (plugin.length > 0) {
+    try {
+      for (const item of plugin) {
+        spinner.start(`install...`);
+        const cmd = `npm install --prefix ${dirname} ${item}`;
+        childProcess.exec(cmd, () => {
+          spinner.succeed(`install ${item} complete.`);
+        });
+      }
+    } catch (error) {
+      spinner.fail(`install ${error} fail.`);
+    }
+  }
+};
+
 module.exports = {
   ajaxPost,
   writeFile,
   rmFile,
   cliConfig,
   toHump,
-  cleanArgs
+  cleanArgs,
+  installPlugin
 };

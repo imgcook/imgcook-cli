@@ -1,17 +1,39 @@
 const ora = require('ora');
 const path = require('path');
 const chalk = require('chalk');
-const fs = require('fs');
-const spinner = ora();
+const fse = require('fs-extra');
+// const spinner = ora();
 const cwd = process.cwd();
-const childProcess = require('child_process');
-const PluginReact = require('@imgcook/cli-plugin-react');
+const { cliConfig } = require('./helper');
+const imgcookModulesPath = cliConfig.imgcookModules;
 
 const init = async (value, option) => {
-  const folderPath = path.join(cwd, value);
-  console.log(value);
-  console.log(option);
-  // console.log(await PluginReact({folderPath, name: value}))
+  let name = value;
+  let data;
+  let configData = {};
+  if (typeof name !== 'string') {
+    name = 'test';
+  }
+  console.log(cliConfig.configFile);
+  // 检查是否存在配置文件
+  if (fse.existsSync(cliConfig.configFile)) {
+    configData = await fse.readJson(cliConfig.configFile);
+  } else {
+    // 如果配置为空则去设置
+    require('./config')('set', {});
+  }
+  try {
+    const folderPath = path.join(cwd, name);
+    const generator = configData.generator || [];
+    if (generator.length > 0) {
+      for (const generatorItem of generator) {
+        const generatorItemPath = `${imgcookModulesPath}/node_modules/${generatorItem}`;
+        data = await require(generatorItemPath)({folderPath, name: value})
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 
