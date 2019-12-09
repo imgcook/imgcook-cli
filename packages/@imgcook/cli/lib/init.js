@@ -2,7 +2,6 @@ const ora = require('ora');
 const path = require('path');
 const chalk = require('chalk');
 const fse = require('fs-extra');
-// const spinner = ora();
 const cwd = process.cwd();
 const { cliConfig } = require('./helper');
 const imgcookModulesPath = cliConfig.imgcookModules;
@@ -27,7 +26,11 @@ const init = async (value, option) => {
     if (generator.length > 0) {
       for (const generatorItem of generator) {
         const generatorItemPath = `${imgcookModulesPath}/node_modules/${generatorItem}`;
-        data = await require(generatorItemPath)({ folderPath, name: value });
+        data = await require(generatorItemPath)({
+          folderPath,
+          name: value,
+          data
+        });
       }
     }
   } catch (error) {

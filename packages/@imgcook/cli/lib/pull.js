@@ -80,7 +80,6 @@ const pull = async (value, option) => {
     }
     let isSuccess = true;
 
-
     if (!errorData) {
       if (!data.errorList || data.errorList.length === 0) {
         isSuccess = true;
