@@ -65,14 +65,6 @@ program
     require('../lib/init')(value, cmd);
   });
 
-program
-  .command('init-app')
-  .description('Init your imgcook‘s preview app')
-  .allowUnknownOption()
-  .action(async (value, cmd) => {
-    require('../lib/init-app')(value, cmd);
-  });
-
 // Output help information on unknown commands
 program.arguments('<command>').action(cmd => {
   program.outputHelp();

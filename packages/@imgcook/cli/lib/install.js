@@ -25,15 +25,14 @@ const install = async (value, option) => {
     installPlugin(plugin, imgcookModulesPath);
   }
 
-  // 安装loader和plugin
-  if (value !== 'loader' && value !== 'plugin') {
+  // 安装generator和plugin
+  if (value !== 'generator' && value !== 'plugin') {
     if (typeof option.name === 'function' && value === undefined) {
       const generator = configData.generator;
       let plugin = configData.plugin;
       plugin = plugin.concat(generator);
       installPlugin(plugin, imgcookModulesPath);
     } else {
-      console.log(value);
       installPlugin([value], imgcookModulesPath);
     }
   }

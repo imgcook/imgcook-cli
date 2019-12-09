@@ -14,8 +14,6 @@ const pull = async (value, option) => {
     filePath = path.isAbsolute(option.path)
       ? option.path
       : path.join(cwd, option.path);
-  } else if (option.app) {
-    filePath = path.join(cwd, 'src/mods/', `mod${value}`);
   }
 
   if (!fs.existsSync(cliConfig.configFile)) {
@@ -63,7 +61,11 @@ const pull = async (value, option) => {
           data = await require(pluginItemPath)({
             data,
             filePath,
-            config: configData
+            config: configData,
+            cmd: {
+              value,
+              ...option
+            }
           });
         }
       }
@@ -76,37 +78,32 @@ const pull = async (value, option) => {
     if (fs.existsSync(imgrcPath)) {
       fs.unlinkSync(imgrcPath);
     }
+    let isSuccess = true;
 
-    if (option.app) {
-      // 检索mods目录更新索引
-      try {
-        let modList = [];
-        let string = '';
-        modList = fs.readdirSync(path.join(cwd, 'src/mods/')).filter(v => {
-          return v !== 'index.js';
-        });
-        modList.map(name => {
-          string += `import ${name} from './${name}'\n`;
-        });
-        string += 'export default {\n';
-        modList.map(name => {
-          string += `\t${name},\n`;
-        });
-        string += '}';
-        fs.writeFileSync(path.join(cwd, 'src/mods/index.js'), string, 'utf-8');
-        spinner.succeed(` 索引文件 index.js 更新完成`);
-      } catch (error) {
-        console.log(chalk.red(`update link file error: ${error}`));
-      }
-    }
 
     if (!errorData) {
-      moduleData && spinner.succeed(`「${moduleData.name}」模块下载完成`);
+      if (!data.errorList || data.errorList.length === 0) {
+        isSuccess = true;
+      } else {
+        isSuccess = false;
+      }
     } else {
-      spinner.fail(`「${moduleData.name}」模块下载失败`);
-      console.error(errorData);
+      isSuccess = false;
+    }
+
+    if (!moduleData) {
+      spinner.fail(`模块不存在`);
+    }
+
+    if (isSuccess) {
+      spinner.succeed(`「${moduleData.name}」下载完成`);
+    } else {
+      spinner.fail(`「${moduleData.name}」下载失败`);
+      errorData && console.error(errorData);
+      data.errorList && console.error(data.errorList);
     }
   }
+
   if (!repoData.success) {
     if (repoData.code && repoData.code.message) {
       console.log(chalk.red(`Error: ${repoData.code.message}`));

@@ -14,7 +14,6 @@ const init = async (value, option) => {
   if (typeof name !== 'string') {
     name = 'test';
   }
-  console.log(cliConfig.configFile);
   // 检查是否存在配置文件
   if (fse.existsSync(cliConfig.configFile)) {
     configData = await fse.readJson(cliConfig.configFile);
@@ -28,14 +27,13 @@ const init = async (value, option) => {
     if (generator.length > 0) {
       for (const generatorItem of generator) {
         const generatorItemPath = `${imgcookModulesPath}/node_modules/${generatorItem}`;
-        data = await require(generatorItemPath)({folderPath, name: value})
+        data = await require(generatorItemPath)({ folderPath, name: value });
       }
     }
   } catch (error) {
     console.log(error);
   }
 };
-
 
 module.exports = (...args) => {
   return init(...args).catch(err => {

@@ -40,7 +40,6 @@ module.exports = (...args) => {
 const cpAsset = (option) => {
   const { folderPath, name } = option;
   const assetsDirname = `${__dirname}/assets/*`;
-  console.log(assetsDirname);
   try {
     spinner.start(`为你初始化 imgcook 预览应用中...`);
     childProcess.exec(`cp -rf ${assetsDirname} ${folderPath}`, {}, () => {

@@ -28,7 +28,7 @@ yarn global add @imgcook/cli
 
 ```shell
 
-# 显示配置如 { accessId: 'kR1ds13cJ1wT8CcJ', 'dslId': 1, "initPlugin": ["@imgcook/cli-loader-images" ...], "addPlugin": "@imgcook/cli-plugin-generate", uploadUrl: '',}
+# 显示配置如 { accessId: 'kR1ds13cJ1wT8CcJ', 'dslId': 1, "plugin": ["@imgcook/plugin-images" ...], uploadUrl: '',}
 #
 # 各模版对应的id
 # Vue 开发规范: 29,
@@ -47,7 +47,6 @@ imgcook config --get <path>
 imgcook config edit
 # 插件安装
 imgcook install
-imgcook install loader
 imgcook install plugin
 imgcook install plugin --name <value>
 
@@ -56,18 +55,18 @@ imgcook config set
 
 # 设置单个配置
 imgcook config --set <path> <value>
-# 例子
-imgcook config --set loader @imgcook/cli-loader-images
 
-# 移除loaders里插件
+# 移除单个配置
 imgcook config --remove <path> <value>
+
 # 例子
-imgcook config --remove loader @imgcook/cli-loader-images
+imgcook config --set plugin @imgcook/plugin-images
+imgcook config --remove plugin @imgcook/plugin-images
 
 ```
 
 注：<br/> 1. Access ID 可以在 https://imgcook.taobao.org 上点击头像 》用户信息 查看
-<img src="https://img.alicdn.com/tfs/TB1rK6HU4YaK1RjSZFnXXa80pXa-1122-568.png" width="561" /><br/> 2. dslId 表示 DSL(Domain Specific Language) id，可以在[dsl 列表页](https://imgcook.taobao.org/dsl)上 hover 到更新时间上查看如图:<img src="https://img.alicdn.com/tfs/TB1injJXxiH3KVjSZPfXXXBiVXa-528-424.png" width="200" /> <br/>3. loaders 表示加载预处理文件插件列表，可以添加自定义的 loader <br/> 4. plugins 表示对整个文件操作插件<br/> 5. uploadUrl 表示上传接口，需要和`@imgcook/cli-loader-images`一起使用, 可通过 `imgcook config --set <path> <value>` 配置
+<img src="https://img.alicdn.com/tfs/TB1rK6HU4YaK1RjSZFnXXa80pXa-1122-568.png" width="561" /><br/> 2. dslId 表示 DSL(Domain Specific Language) id，可以在[dsl 列表页](https://imgcook.taobao.org/dsl)上 hover 到更新时间上查看如图:<img src="https://img.alicdn.com/tfs/TB1injJXxiH3KVjSZPfXXXBiVXa-528-424.png" width="200" /> <br/> 3. plugin 可以加载预处理文件或对整个文件操作插件<br/> 4. uploadUrl 表示上传接口，需要和`@imgcook/plugin-images`一起使用, 可通过 `imgcook config --set <path> <value>` 配置
 
 #### imgcook init 
 
@@ -94,23 +93,23 @@ imgcook pull <moduleid> --path <path>
 
 #### imgcook install
 
-> 安装依赖 loader 和插件
+> 安装依赖插件
 
 ```shell
 # 默认安装全部
 imgcook install
 
-# 安装全部loader
-imgcook install loader
+# 安装 generator
+imgcook install generator
 
-# 安装全部plugin
+# 安装 plugin
 imgcook install plugin
 
-# 安装某个插件(包括loader插件)
+# 安装某个插件
 imgcook install plugin --name <value>
 
 # 例子
-imgcook install plugin --name @imgcook/cli-loader-images
+imgcook install plugin --name @imgcook/plugin-images
 ```
 
 ### 选项
@@ -139,43 +138,17 @@ imgcook -h
 
 ## 插件开发
 
-> 插件分为 loader 和 plugin 两种，loader 用来处理文件内容，plugin 用来处理工程目录
+> 插件分为 generator 和 plugin, generator 用来生成一个模版项目，plugin 对导出模块代码处理
 
 ### 插件命名规范
 
-loader： `@imgcook/loader-xx`  plugin: `@imgcook/plugin-xx` <br />
+plugin: `@imgcook/plugin-xx` <br />
 
 ### 插件规范
 
-#### loader
-
-示例：[https://github.com/imgcook/imgcook-cli/tree/master/packages/%40imgcook/cli-loader-images](https://github.com/imgcook/imgcook-cli/tree/master/packages/%40imgcook/cli-loader-images)
-
-```javascript
-/**
- * Copyright(c) xxx Holding Limited.
- *
- * Authors: xx
- */
-
-/**
- * @param fileValue: 文件内容，生成的代码
- * @param option: { item, filePath, index, config }
- */
-const loaderExample = async (fileValue, option) => {
-  return fileValue;
-};
-
-module.exports = (...args) => {
-  return loaderExample(...args).catch(err => {
-    console.log(err);
-  });
-};
-```
-
 #### plugin
 
-示例：[https://github.com/imgcook/imgcook-cli/tree/master/packages/%40imgcook/cli-plugin-generate](https://github.com/imgcook/imgcook-cli/tree/master/packages/%40imgcook/cli-plugin-generate)
+示例：[https://github.com/imgcook/imgcook-cli/tree/master/packages/%40imgcook/plugin-generate](https://github.com/imgcook/imgcook-cli/tree/master/packages/%40imgcook/plugin-generate)
 
 ```javascript
 /**
@@ -185,12 +158,13 @@ module.exports = (...args) => {
  */
 
 /**
- * @param fileValue: 文件内容，生成的代码
- * @param option: { filePath, index, config }
+ * @param option: { data, filePath, config }
+ * - data: 模块和生成代码
+ * - filePath: 下载文件存放目录
+ * - config: cli 配置
  */
-const pluginExample = async (fileValue, option) => {
-  const filePaths = {};
-  return filePaths;
+const pluginExample = async (option) => {
+  return option;
 };
 
 module.exports = (...args) => {

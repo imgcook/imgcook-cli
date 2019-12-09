@@ -158,27 +158,36 @@ const config = async (value, option) => {
     if (!fse.existsSync(`${cliConfig.path}`)) {
       fse.mkdirSync(`${cliConfig.path}`);
     }
-    set(configData, option.set, value);
+    set({
+      target: configData,
+      path: option.set,
+      value,
+      type: option.set
+    });
     await fse.writeFile(
       cliConfig.configFile,
       JSON.stringify(configData, null, 2),
       'utf8'
     );
-    if (option.set === 'loader' || option.set === 'plugin') {
-      installLoader([value], imgcookModulesPath);
+    if (option.set === 'generator' || option.set === 'plugin') {
+      installPlugin([value], imgcookModulesPath);
     }
     const message = chalk.green(`设置 ${value} 成功`);
     console.log(message);
-    return message;
   }
   if (option.remove) {
-    remove(configData, option.remove, value);
+    remove({
+      target: configData,
+      path: option.remove,
+      value,
+      type: option.remove
+    });
     await fse.writeFile(
       cliConfig.configFile,
       JSON.stringify(configData, null, 2),
       'utf8'
     );
-    if (option.remove === 'loader' || option.remove === 'plugin') {
+    if (option.remove === 'generator' || option.remove === 'plugin') {
       try {
         childProcess.execSync(
           `cd ${imgcookModulesPath}/node_modules && rm -rf ${value}`
@@ -227,7 +236,8 @@ const get = (target, path) => {
   return obj[fields[l - 1]];
 };
 
-const set = function(target, path, value) {
+const set = function(option) {
+  const { target, path, value, type } = option;
   const fields = path.split('.');
   let obj = target;
   const l = fields.length;
@@ -238,7 +248,7 @@ const set = function(target, path, value) {
     }
     obj = obj[key];
   }
-  if (fields[l - 1] === 'loader') {
+  if (fields[l - 1] === type) {
     if (obj[fields[l - 1]].length > 0) {
       for (const item of obj[fields[l - 1]]) {
         if (item !== value) {
@@ -253,7 +263,8 @@ const set = function(target, path, value) {
   }
 };
 
-const remove = function(target, path, value) {
+const remove = function(option) {
+  const { target, path, value, type } = option;
   const fields = path.split('.');
   let obj = target;
   const l = fields.length;
@@ -265,7 +276,7 @@ const remove = function(target, path, value) {
     obj = obj[key];
   }
   const key = fields[l - 1];
-  if (key === 'loader') {
+  if (key === type) {
     target[key] = removeItem(target[key], value);
   } else {
     target[key] = '';
