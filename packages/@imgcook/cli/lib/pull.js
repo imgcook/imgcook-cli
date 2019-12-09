@@ -5,11 +5,10 @@ const fs = require('fs');
 const spinner = ora();
 const cwd = process.cwd();
 
-const { ajaxPost, cliConfig } = require('./helper');
+const { ajaxPost, ajaxGet, cliConfig } = require('./helper');
 
 const pull = async (value, option) => {
   let filePath = cwd;
-
   if (option.path) {
     filePath = path.isAbsolute(option.path)
       ? option.path
@@ -34,6 +33,9 @@ const pull = async (value, option) => {
   }
   let configData = fs.readFileSync(cliConfig.configFile, 'UTF-8');
   configData = JSON.parse(configData);
+
+  // const apiUrl = `https://pre-www.imgcook.com/api-open/v2/getTeamInfo?access_id=${configData.accessId}&id=${value}&type=module`;
+
   const url = cliConfig.module.url;
   const imgcookModulesPath = cliConfig.imgcookModules;
   const repoData = await ajaxPost(url, {

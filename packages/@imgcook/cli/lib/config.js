@@ -71,7 +71,7 @@ let promptConfig = [
 ];
 
 const fse = require('fs-extra');
-const { cliConfig, installPlugin, remove, get, set } = require('./helper');
+const { cliConfig, installPlugin, remove, get, set, syncConfig } = require('./helper');
 const inquirer = require('inquirer');
 const chalk = require('chalk');
 const ora = require('ora');
@@ -120,6 +120,12 @@ const config = async (value, option) => {
     return;
   }
 
+  if (value === 'sync') {
+    const teamConfig = await syncConfig({ config: configData });
+    console.log(teamConfig);
+    return
+  }
+
   // 不存在指令
   if (value !== 'set' && !option.set && !option.get && !option.remove) {
     const result = JSON.stringify(configData, null, 2);
@@ -150,6 +156,8 @@ const config = async (value, option) => {
       installPlugin(plugin, imgcookModulesPath);
     });
   }
+
+
   if (option.set && value) {
     if (!fse.existsSync(`${cliConfig.path}`)) {
       fse.mkdirSync(`${cliConfig.path}`);

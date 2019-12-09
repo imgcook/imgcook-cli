@@ -25,6 +25,20 @@ const ajaxPost = (url, param) => {
   });
 };
 
+const ajaxGet = (url, param) => {
+  return new Promise(resolve => {
+    request(
+      url,
+      function(err, res, body) {
+        if (err) {
+          console.log(chalk.red(JSON.stringify(err)));
+        }
+        resolve(body);
+      }
+    );
+  });
+}
+
 // 写文件
 const writeFile = (content, filePath, code) => {
   return new Promise((resolve, reject) => {
@@ -169,8 +183,20 @@ const removeItem = (arr, key) => {
   return arr;
 };
 
+const syncConfig = async (option) => {
+  const { config } = option;
+  const apiUrl = `https://pre-www.imgcook.com/api-open/v2/getTeamConfig?access_id=${config.accessId}`;
+  const moduleConfigData = await ajaxGet(apiUrl);
+  const moduleConfig = JSON.parse(moduleConfigData) || {};
+  const pluginConfig = moduleConfig.pluginConfig && JSON.parse(moduleConfig.pluginConfig) || {};
+  return { 
+    pluginConfig
+  };
+}
+
 module.exports = {
   ajaxPost,
+  ajaxGet,
   writeFile,
   rmFile,
   cliConfig,
@@ -180,5 +206,6 @@ module.exports = {
   get,
   set,
   remove,
-  removeItem
+  removeItem,
+  syncConfig
 };
