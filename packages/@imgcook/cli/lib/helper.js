@@ -188,7 +188,8 @@ const syncConfig = async (option) => {
   const apiUrl = `https://pre-www.imgcook.com/api-open/v2/getTeamConfig?access_id=${config.accessId}`;
   const moduleConfigData = await ajaxGet(apiUrl);
   const moduleConfig = JSON.parse(moduleConfigData) || {};
-  const pluginConfig = moduleConfig.pluginConfig && JSON.parse(moduleConfig.pluginConfig) || {};
+  const tenantConfig = moduleConfig.data.tenantConfig;
+  const pluginConfig = tenantConfig.pluginConfig && JSON.parse(tenantConfig.pluginConfig) || {};
   return { 
     pluginConfig
   };

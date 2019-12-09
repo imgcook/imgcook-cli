@@ -122,8 +122,33 @@ const config = async (value, option) => {
 
   if (value === 'sync') {
     const teamConfig = await syncConfig({ config: configData });
-    console.log(teamConfig);
-    return
+    const { pluginConfig } = teamConfig;
+    const plugin = pluginConfig.list || [];
+    const generator = pluginConfig.scaffold || [];
+    for (const item of generator) {
+      configData.generator = [];
+      set({
+        target: configData,
+        path: 'generator',
+        value: item.name,
+        type: 'generator'
+      });
+    }
+    for (const item of plugin) {
+      configData.plugin = [];
+      set({
+        target: configData,
+        path: 'plugin',
+        value: item.name,
+        type: 'plugin'
+      });
+    }
+    await fse.writeFile(
+      cliConfig.configFile,
+      JSON.stringify(configData, null, 2),
+      'utf8'
+    );
+    return;
   }
 
   // 不存在指令
