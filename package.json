@@ -4,7 +4,8 @@
   "scripts": {
     "init": "lerna bootstrap",
     "publish": "lerna publish",
-    "test": "lerna run test"
+    "test": "lerna run test",
+    "genSub": "git submodule init && git submodule update"
   },
   "devDependencies": {
     "lerna": "^3.13.1"
