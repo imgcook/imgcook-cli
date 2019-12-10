@@ -1,6 +1,6 @@
 {
   "name": "@imgcook/cli-utils",
-  "version": "0.0.2-alpha.2",
+  "version": "0.1.0-alpha.0",
   "description": "imgcook cli utils",
   "main": "index.js",
   "scripts": {
@@ -22,5 +22,6 @@
   "homepage": "https://github.com/imgcook/imgcook-cli#readme",
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "gitHead": "43873e662d8cb86870611c4c8427d748ebd03d49"
 }

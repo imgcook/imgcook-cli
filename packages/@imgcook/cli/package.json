@@ -1,6 +1,6 @@
 {
   "name": "@imgcook/cli",
-  "version": "0.0.3",
+  "version": "0.1.0-alpha.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -16,7 +16,7 @@
   "author": "gindis",
   "license": "ISC",
   "dependencies": {
-    "@imgcook/cli-utils": "^0.0.2-alpha.2",
+    "@imgcook/cli-utils": "^0.1.0-alpha.0",
     "chalk": "^2.4.2",
     "commander": "^2.19.0",
     "fs-extra": "^7.0.1",
@@ -43,5 +43,5 @@
   "devDependencies": {
     "chai": "^4.2.0"
   },
-  "gitHead": "cc5b79f10d8ab4ddf0d2589621e7cbcee7fc575f"
+  "gitHead": "43873e662d8cb86870611c4c8427d748ebd03d49"
 }
