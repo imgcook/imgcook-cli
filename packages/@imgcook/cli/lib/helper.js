@@ -7,6 +7,20 @@ const childProcess = require('child_process');
 const spinner = ora();
 const domain = 'https://www.imgcook.com';
 
+const { homedir } = require('@imgcook/cli-utils');
+const userhome = homedir();
+const imgcookConfigPath = `${userhome}/.imgcook`;
+const imgcookRc = `${imgcookConfigPath}/.imgcookrc`;
+const imgcookModules = `${imgcookConfigPath}/imgcook_modules`;
+const cliConfig = {
+  path: imgcookConfigPath,
+  configFile: imgcookRc,
+  imgcookModules,
+  module: {
+    url: `${domain}/api-open/code-acquire`
+  }
+};
+
 // Post请求
 const ajaxPost = (url, param) => {
   return new Promise(resolve => {
@@ -62,20 +76,6 @@ const writeFile = (content, filePath, code) => {
 
 const rmFile = file => {
   childProcess.execSync(`rm -rf ${file}`);
-};
-
-const { homedir } = require('@imgcook/cli-utils');
-const userhome = homedir();
-const imgcookConfigPath = `${userhome}/.imgcook`;
-const imgcookRc = `${imgcookConfigPath}/.imgcookrc`;
-const imgcookModules = `${imgcookConfigPath}/imgcook_modules`;
-const cliConfig = {
-  path: imgcookConfigPath,
-  configFile: imgcookRc,
-  imgcookModules,
-  module: {
-    url: `${domain}/api-open/code-acquire`
-  }
 };
 
 // eg：hello-world => helloWorld
