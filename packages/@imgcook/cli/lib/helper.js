@@ -5,6 +5,7 @@ const ora = require('ora');
 const childProcess = require('child_process');
 
 const spinner = ora();
+const domain = 'https://www.imgcook.com';
 
 // Post请求
 const ajaxPost = (url, param) => {
@@ -27,17 +28,14 @@ const ajaxPost = (url, param) => {
 
 const ajaxGet = (url, param) => {
   return new Promise(resolve => {
-    request(
-      url,
-      function(err, res, body) {
-        if (err) {
-          console.log(chalk.red(JSON.stringify(err)));
-        }
-        resolve(body);
+    request(url, function(err, res, body) {
+      if (err) {
+        console.log(chalk.red(JSON.stringify(err)));
       }
-    );
+      resolve(body);
+    });
   });
-}
+};
 
 // 写文件
 const writeFile = (content, filePath, code) => {
@@ -76,7 +74,7 @@ const cliConfig = {
   configFile: imgcookRc,
   imgcookModules,
   module: {
-    url: 'https://imgcook.taobao.org/api-open/code-acquire'
+    url: `${domain}/api-open/code-acquire`
   }
 };
 
@@ -108,6 +106,19 @@ const installPlugin = (plugin, dirname) => {
       }
     } catch (error) {
       spinner.fail(`install ${error} fail.`);
+    }
+  }
+};
+
+const installPluginSync = async (plugin, dirname) => {
+  if (plugin.length > 0) {
+    try {
+      for (const item of plugin) {
+        const cmd = `npm install --prefix ${dirname} ${item}`;
+        childProcess.execSync(cmd);
+      }
+    } catch (error) {
+      // console.log(error);
     }
   }
 };
@@ -183,17 +194,80 @@ const removeItem = (arr, key) => {
   return arr;
 };
 
-const syncConfig = async (option) => {
+const syncConfig = async option => {
   const { config } = option;
-  const apiUrl = `https://pre-www.imgcook.com/api-open/v2/getTeamConfig?access_id=${config.accessId}`;
+  const apiUrl = `${domain}/api-open/v2/getTeamConfig?access_id=${config.accessId}`;
   const moduleConfigData = await ajaxGet(apiUrl);
   const moduleConfig = JSON.parse(moduleConfigData) || {};
   const tenantConfig = moduleConfig.data.tenantConfig;
-  const pluginConfig = tenantConfig.pluginConfig && JSON.parse(tenantConfig.pluginConfig) || {};
-  return { 
+  const pluginConfig =
+    (tenantConfig.pluginConfig && JSON.parse(tenantConfig.pluginConfig)) || {};
+  return {
     pluginConfig
   };
-}
+};
+
+const getTokenInfo = async option => {
+  const { config } = option;
+  const apiUrl = `${domain}/api-open/v2/getTokenInfo?access_id=${config.accessId}`;
+  const tokenInfo = await ajaxGet(apiUrl);
+  const tokenInfoJson = JSON.parse(tokenInfo) || {};
+  if (tokenInfoJson.status) {
+    return {
+      ...tokenInfoJson.data
+    };
+  } else {
+    return {
+      ...tokenInfoJson
+    };
+  }
+};
+
+const getTeamInfo = async option => {
+  const { config, id, type } = option;
+  if (!id) {
+    console.error(chalk.red('缺少id，执行 `imgcook config sync --id <moduleId>'));
+    return {};
+  }
+  const apiUrl = `${domain}/api-open/v2/getTeamInfo?access_id=${config.accessId}&id=${id}&type=${type}`;
+  const moduleConfigData = await ajaxGet(apiUrl);
+  const moduleConfig = JSON.parse(moduleConfigData) || {};
+  const tenantConfig = moduleConfig.data.tenantConfig || {};
+  const pluginConfig =
+    (tenantConfig.pluginConfig && JSON.parse(tenantConfig.pluginConfig)) || {};
+  return {
+    pluginConfig
+  };
+};
+
+const getPlugin = async option => {
+  const tokenInfo = await getTokenInfo(option);
+  let plugin = [];
+  let generator = [];
+  let pluginData = [];
+  let generatorData = [];
+  let teamConfig = {};
+  if (tokenInfo.customerType === 'app') {
+    teamConfig = await syncConfig(option);
+  } else if (tokenInfo.customerType === 'user') {
+    teamConfig = await getTeamInfo(option);
+  }
+  const pluginConfig = teamConfig.pluginConfig || {};
+  pluginData = pluginConfig.list || [];
+  generatorData = pluginConfig.scaffold || [];
+
+  for (const item of generatorData) {
+    generator.push(item.name);
+  }
+  for (const item of pluginData) {
+    plugin.push(item.name);
+  }
+
+  return {
+    plugin,
+    generator
+  };
+};
 
 module.exports = {
   ajaxPost,
@@ -204,9 +278,12 @@ module.exports = {
   toHump,
   cleanArgs,
   installPlugin,
+  installPluginSync,
   get,
   set,
   remove,
   removeItem,
-  syncConfig
+  syncConfig,
+  getTokenInfo,
+  getPlugin
 };

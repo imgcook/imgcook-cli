@@ -5,7 +5,12 @@ const fs = require('fs');
 const spinner = ora();
 const cwd = process.cwd();
 
-const { ajaxPost, ajaxGet, cliConfig } = require('./helper');
+const {
+  ajaxPost,
+  getPlugin,
+  cliConfig,
+  installPluginSync
+} = require('./helper');
 
 const pull = async (value, option) => {
   let filePath = cwd;
@@ -31,13 +36,12 @@ const pull = async (value, option) => {
       });
     return;
   }
+  const url = cliConfig.module.url;
+  const imgcookModulesPath = cliConfig.imgcookModules;
+
   let configData = fs.readFileSync(cliConfig.configFile, 'UTF-8');
   configData = JSON.parse(configData);
 
-  // const apiUrl = `https://pre-www.imgcook.com/api-open/v2/getTeamInfo?access_id=${configData.accessId}&id=${value}&type=module`;
-
-  const url = cliConfig.module.url;
-  const imgcookModulesPath = cliConfig.imgcookModules;
   const repoData = await ajaxPost(url, {
     data: {
       dsl_id: configData.dslId,
@@ -56,7 +60,19 @@ const pull = async (value, option) => {
 
     try {
       // execute plugin
-      const plugin = configData.plugin || [];
+      let plugin = configData.plugin || [];
+
+      // 拉取配置
+      // const pluginData = await getPlugin({
+      //   config: configData,
+      //   id: value,
+      //   type: 'module'
+      // });
+      // if (pluginData && pluginData.plugin && pluginData.plugin.length > 0) {
+      //   plugin = pluginData.plugin;
+      //   await installPluginSync(plugin, imgcookModulesPath);
+      // }
+
       if (plugin.length > 0) {
         for (const pluginItem of plugin) {
           const pluginItemPath = `${imgcookModulesPath}/node_modules/${pluginItem}`;

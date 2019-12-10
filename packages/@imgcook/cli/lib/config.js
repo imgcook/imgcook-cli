@@ -71,12 +71,13 @@ let promptConfig = [
 ];
 
 const fse = require('fs-extra');
-const { cliConfig, installPlugin, remove, get, set, syncConfig } = require('./helper');
+const { cliConfig, installPlugin, remove, get, set, getPlugin } = require('./helper');
 const inquirer = require('inquirer');
 const chalk = require('chalk');
 const ora = require('ora');
 const childProcess = require('child_process');
 
+const spinner = ora();
 const initConfig = (promptConfig, config) => {
   config.accessId && (promptConfig[0].default = config.accessId);
   if (config.dslId) {
@@ -121,16 +122,19 @@ const config = async (value, option) => {
   }
 
   if (value === 'sync') {
-    const teamConfig = await syncConfig({ config: configData });
-    const { pluginConfig } = teamConfig;
-    const plugin = pluginConfig.list || [];
-    const generator = pluginConfig.scaffold || [];
+    spinner.start(`Synching...`);
+    const pluginData = await getPlugin({
+      config: configData,
+      id: option.id,
+      type: 'module'
+    });
+    const { generator, plugin } = pluginData;
     for (const item of generator) {
       configData.generator = [];
       set({
         target: configData,
         path: 'generator',
-        value: item.name,
+        value: item,
         type: 'generator'
       });
     }
@@ -139,7 +143,7 @@ const config = async (value, option) => {
       set({
         target: configData,
         path: 'plugin',
-        value: item.name,
+        value: item,
         type: 'plugin'
       });
     }
@@ -148,6 +152,7 @@ const config = async (value, option) => {
       JSON.stringify(configData, null, 2),
       'utf8'
     );
+    spinner.succeed(`Complete.`);
     return;
   }
 
