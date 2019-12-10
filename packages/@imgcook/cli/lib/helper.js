@@ -149,7 +149,7 @@ const set = function(option) {
     }
     obj = obj[key];
   }
-  if (fields[l - 1] === type) {
+  if (fields[l - 1] === 'plugin' || fields[l - 1] === 'generator') {
     if (obj[fields[l - 1]].length > 0) {
       for (const item of obj[fields[l - 1]]) {
         if (item !== value) {
@@ -177,7 +177,7 @@ const remove = function(option) {
     obj = obj[key];
   }
   const key = fields[l - 1];
-  if (key === type) {
+  if (key === 'plugin' || key === 'generator') {
     target[key] = removeItem(target[key], value);
   } else {
     target[key] = '';

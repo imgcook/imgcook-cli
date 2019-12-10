@@ -30,7 +30,7 @@ let promptConfig = [
     type: 'input',
     name: 'accessId',
     message: 'Access ID',
-    default: '7YI3Z4afVQxje3cU'
+    default: 'CeyXyNkWORPH1LKa'
   },
   {
     type: 'list',
@@ -206,7 +206,7 @@ const config = async (value, option) => {
     if (option.set === 'generator' || option.set === 'plugin') {
       installPlugin([value], imgcookModulesPath);
     }
-    const message = chalk.green(`设置 ${value} 成功`);
+    const message = chalk.green(`设置 ${option.set} 成功`);
     console.log(message);
   }
   if (option.remove) {
@@ -230,7 +230,7 @@ const config = async (value, option) => {
         console.error(error);
       }
     }
-    console.log(chalk.green(`删除 ${value} 成功`));
+    console.log(chalk.green(`删除 ${option.remove} 成功`));
   }
   if (option.get) {
     const value = get(configData, option.get);
