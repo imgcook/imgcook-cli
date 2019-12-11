@@ -1,13 +1,15 @@
 os:
   - linux
   - osx
+
+addons:
+  firefox: "45.9.0esr"
+
 language: node_js
 node_js:
   - '9'
 
 before_install:
-  - git submodule init
-  - git submodule update
   - npm install -g yarn
   - yarn config set ignore-engines true
   - yarn global add mocha
