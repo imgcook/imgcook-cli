@@ -27,9 +27,15 @@ const init = async (value, option) => {
       for (const generatorItem of generator) {
         const generatorItemPath = `${imgcookModulesPath}/node_modules/${generatorItem}`;
         data = await require(generatorItemPath)({
+          data,
+          filePath: folderPath,
+          config: configData,
+          cmd: {
+            value,
+            ...option
+          },
           folderPath,
           name: value,
-          data
         });
       }
     }

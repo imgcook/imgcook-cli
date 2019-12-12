@@ -125,7 +125,7 @@ const pull = async (value, option) => {
     if (repoData.code && repoData.code.message) {
       console.log(chalk.red(`Error: ${repoData.code.message}`));
     } else {
-      console.log(chalk.red(`Error: ${repoData.message}`));
+      console.log(chalk.red(`Error: ${JSON.stringify(repoData)}`));
     }
   }
 };

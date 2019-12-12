@@ -116,40 +116,21 @@ imgcook -h
 ```
 
 
-## 插件开发
-> 插件分为loader和plugin两种，loader用来处理文件内容，plugin用来处理工程目录
+## Plugin 开发
+> Plugin 分为初始化项目和导出模块代码处理，
+> 初始化项目 Plugin: 执行 `imgcook init <path>` 指令时调用，可以使用 `imgcook config --set generator @imgcook/generator-react` 指令设置
+> 导出模块代码处理 Plugin: 执行 `imgcook pull <moduleid> --path <path>`指令时调用，可以使用`imgcook config --set plugin @imgcook/plugin-generate` 指令设置
 
 ### 插件命名规范
-loader： `@imgcook/loader-xx`  plugin: `@imgcook/plugin-xx` <br />
+plugin: `@imgcook/plugin-xx` 或  `@imgcook/generator-xxx` <br />
+
+### 新建和管理插件
+https://www.imgcook.com/cli-plugin
 
 ### 插件规范
+示例1：[https://github.com/imgcook/imgcook-cli/tree/master/packages/%40imgcook/plugin-generate](https://github.com/imgcook/imgcook-cli/tree/master/packages/%40imgcook/plugin-generate)
+示例2：[https://github.com/imgcook/imgcook-cli/tree/master/packages/%40imgcook/generator-react](https://github.com/imgcook/imgcook-cli/tree/master/packages/%40imgcook/plugin-generate)
 
-#### loader
-示例：[https://github.com/imgcook/imgcook-cli/tree/master/packages/%40imgcook/cli-loader-images](https://github.com/imgcook/imgcook-cli/tree/master/packages/%40imgcook/cli-loader-images)
-```javascript
-/**
- * Copyright(c) xxx Holding Limited.
- *
- * Authors: xx
- */
-
-/**
- * @param fileValue: 文件内容，生成的代码
- * @param option: { item, filePath, index, config }
- */
-const loaderExample = async (fileValue, option) => {
-  return fileValue;
-}
-
-module.exports = (...args) => {
-  return loaderExample(...args).catch(err => {
-    console.log(err);
-  });
-};
-```
-
-#### plugin
-示例：[https://github.com/imgcook/imgcook-cli/tree/master/packages/%40imgcook/cli-plugin-generate](https://github.com/imgcook/imgcook-cli/tree/master/packages/%40imgcook/cli-plugin-generate)
 ```javascript
 
 /**
@@ -159,10 +140,12 @@ module.exports = (...args) => {
  */
 
 /**
- * @param fileValue: 文件内容，生成的代码
- * @param option: { item, filePath, index, config }
+ * @param {Object} options: { data, filePath, config }
+ *  	- {Object} data 生成代码数据
+ *		- {String} filePath 导出路径
+ * 		- {Object} config cli 配置
  */
-const pluginExample = async (fileValue, option) => {
+const pluginExample = async (options) => {
   const filePaths = {}
   return filePaths;
 }
