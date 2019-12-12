@@ -30,7 +30,12 @@ let promptConfig = [
     type: 'input',
     name: 'accessId',
     message: 'Access ID',
-    default: 'CeyXyNkWORPH1LKa'
+    validate: val => {
+      if (val.match(/\w{16}/g)) {
+        return true;
+      }
+      return '请输入 16 位的 Access ID, 打开 https://www.imgcook.com 移到右上角头像点击菜单里个人页面，点击左上方用户昵称查看';
+    }
   },
   {
     type: 'list',
@@ -65,13 +70,20 @@ let promptConfig = [
     type: 'checkbox',
     name: 'plugin',
     message: 'Plugin',
-    default: ['@imgcook/plugin-images', '@imgcook/plugin-generate'],
+    default: ['@imgcook/plugin-generate'],
     choices: ['@imgcook/plugin-images', '@imgcook/plugin-generate']
   }
 ];
 
 const fse = require('fs-extra');
-const { cliConfig, installPlugin, remove, get, set, getPlugin } = require('./helper');
+const {
+  cliConfig,
+  installPlugin,
+  remove,
+  get,
+  set,
+  getPlugin
+} = require('./helper');
 const inquirer = require('inquirer');
 const chalk = require('chalk');
 const ora = require('ora');
@@ -105,7 +117,11 @@ const config = async (value, option) => {
 
   // 检查是否存在配置文件
   if (fse.existsSync(cliConfig.configFile)) {
-    configData = await fse.readJson(cliConfig.configFile);
+    try {
+      configData = await fse.readJson(cliConfig.configFile);
+    } catch (error) {
+      configData = {};
+    }
   } else if (!option.set && !option.get && !option.remove) {
     // 如果配置为空则去设置
     value = 'set';
@@ -186,7 +202,6 @@ const config = async (value, option) => {
       installPlugin(plugin, imgcookModulesPath);
     });
   }
-
 
   if (option.set && value) {
     if (!fse.existsSync(`${cliConfig.path}`)) {
