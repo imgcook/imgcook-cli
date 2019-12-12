@@ -1,17 +1,18 @@
+# imgcook-cli
+
 ## 概述
 
-imgcook-cli 可以将 imgcook 平台生成的代码产物（template + style）一键放到本地任意项目目录中，无缝融合到您的研发流程；如果需要加工产物（如：自动上传图片到自己的图片空间、文件目录转化等），均可以自定义插件完成自定义加工。
+imgcook-cli 可以结合 Plugin 的能力一键将 imgcook 平台生成的代码产物放置到你的本地项目工程里，无缝融合到你的研发流程，如果你有对 imgcook 生成代码的产物有加工需求（比如自动上传图片到自己的图床、文件目录转换等），imgcook-cli 是你非常好的选择。
 
 ## 安装
+> imgcook-cli 安装依赖 Node.js 和 NPM，建议使用 Node.js 版本 9.x
 
-> imgcook-cli 安装依赖 Nodejs 和 npm，建议使用 Nodejs 版本 9.x
 
 ```shell
 # npm
 npm install -g @imgcook/cli
-# 或
+# yarn
 yarn global add @imgcook/cli
-
 ```
 
 ## 使用
@@ -19,77 +20,52 @@ yarn global add @imgcook/cli
 ### 常用指令
 
 #### imgcook config
+> 用户设置配置，默认初始化生成官方配置
 
-> 用户设置配置，默认是官方配置
-
-查看配置：`imgcook config ls` <br />设置配置：`imgcook config set`
 
 ```shell
-
-# 显示配置如 { accessId: 'kR1ds13cJ1wT8CcJ', 'dslId': 1, loaders: ["@imgcook/cli-loader-images" ...], "plugins": "@imgcook/cli-plugin-generate", uploadUrl: '',}
-#
-# 各模版对应的id
-# Vue 开发规范: 29,
-# 微信小程序开发规范: 21,
-# React 开发规范: 12,
-# H5 标准开发规范: 5,
-# Rax 标准开发规范: 1
-
-# 查看配置
-imgcook config
-
-# 查看单个配置
-imgcook config --get <path>
-
-# 直接打开配置文件编辑
-imgcook config edit
-# 插件安装
-imgcook install
-imgcook install loader
-imgcook install plugin
-imgcook install plugin --name <value>
-
 # 设置配置
 imgcook config set
 
-# 设置单个配置
-imgcook config --set <path> <value>
-# 例子
-imgcook config --set plugin @imgcook/plugin-generate
+# 查看配置
+imgcook config ls
 
-# 移除plugin插件
-imgcook config --remove <path> <value>
-# 例子
-imgcook config --remove plugin @imgcook/plugin-images
-
+# 直接打开配置文件编辑
+imgcook config edit
 ```
 
-注：<br/> 1. Access ID 可以在 https://imgcook.taobao.org 上点击头像 》用户信息 查看
-<img src="https://img.alicdn.com/tfs/TB1rK6HU4YaK1RjSZFnXXa80pXa-1122-568.png" width="561" /><br/> 2. dslId 表示 DSL(Domain Specific Language) id，可以在[dsl 列表页](https://imgcook.taobao.org/dsl)上 hover 到更新时间上查看如图:<img src="https://img.alicdn.com/tfs/TB1injJXxiH3KVjSZPfXXXBiVXa-528-424.png" width="200" /> <br/>3. loaders 表示加载预处理文件插件列表，可以添加自定义的 loader <br/> 4. plugins 表示对整个文件操作插件<br/> 5. uploadUrl 表示上传接口，需要和`@imgcook/plugin-images`一起使用, 可通过 `imgcook config --set <path> <value>` 配置
+> DSL 配置：
+> React D2C Schema：41
+> Vue 开发规范：29
+> 微信小程序开发规范：21
+> React 开发规范：12
+> H5 标准开发规范：5
+> Rax 标准开发规范：1
+> 
+> accessId 获取：官网右上角头像 -> 个人页面 -> 左上方 Icon
+> <image width="396" src="https://gw.alicdn.com/tfs/TB1rFW3qeL2gK0jSZFmXXc7iXXa-1156-480.png">
+
 
 #### imgcook pull
-
 > 拉取模块代码
 
+
 ```shell
-# 拉取模块代码
-imgcook pull <moduleid> --path <path>
+# 拉取某个模块代码到本地路径
+imgcook pull <moduleId> --path <path>
+# 例子
+imgcook pull 17108 --path mod
 ```
 
-注：<br/> 1. moduleid 表示模块 ID，打开模块详情在 URL 上参数查看如图<br/><img src="https://img.alicdn.com/tfs/TB1wtzsVCzqK1RjSZPxXXc4tVXa-1138-508.png" width="400" /><br/>2. path 表示下载到的文件夹名称
-
 #### imgcook install
+> 安装 imgcook-cli 所需的 Plugin 
 
-> 安装依赖 loader 和插件
 
 ```shell
-# 默认安装全部
+# 默认安装全部配置过的 Plugin
 imgcook install
 
-# 安装全部plugin
-imgcook install plugin
-
-# 安装某个插件
+# 安装指定的 Plugin
 imgcook install plugin --name <value>
 
 # 例子
@@ -98,70 +74,21 @@ imgcook install plugin --name @imgcook/plugin-images
 
 ### 选项
 
-#### imgcook --version
 
+#### imgcook --version
 > 显示版本信息
+
 
 ```shell
 imgcook --version
-
-# 快捷方式
 imgcook -v
 ```
 
 #### imgcook --help
-
 > 显示指令使用帮助
+
 
 ```shell
 imgcook --help
-
-# 快捷方式
 imgcook -h
-```
-
-## Plugin 开发
-
-> Plugin 分为初始化项目和导出模块代码处理
->
-> 初始化项目 Plugin: 执行 `imgcook init <path>` 指令时调用，可以使用 `imgcook config --set generator @imgcook/generator-react` 指令设置
->
-> 导出模块代码处理 Plugin: 执行 `imgcook pull <moduleid> --path <path>`指令时调用，可以使用`imgcook config --set plugin @imgcook/plugin-generate` 指令设置
-
-### 插件命名规范
-
-plugin: `@imgcook/plugin-xx` 或  `@imgcook/generator-xxx` <br />
-
-### 新建和管理插件
-
-https://www.imgcook.com/cli-plugin
-
-### 插件规范
-
-示例 1：[https://github.com/imgcook/imgcook-cli/tree/master/packages/%40imgcook/plugin-generate](https://github.com/imgcook/imgcook-cli/tree/master/packages/%40imgcook/plugin-generate)
-示例 2：[https://github.com/imgcook/imgcook-cli/tree/master/packages/%40imgcook/generator-react](https://github.com/imgcook/imgcook-cli/tree/master/packages/%40imgcook/plugin-generate)
-
-```javascript
-/**
- * Copyright(c) xxx Holding Limited.
- *
- * Authors: xx
- */
-
-/**
- * @param {Object} options: { data, filePath, config }
- *   - {Object} data 生成代码数据
- *   - {String} filePath 导出路径
- *   - {Object} config cli 配置
- */
-const pluginExample = async options => {
-  const filePaths = {};
-  return filePaths;
-};
-
-module.exports = (...args) => {
-  return pluginExample(...args).catch(err => {
-    console.log(err);
-  });
-};
 ```
