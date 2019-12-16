@@ -1,6 +1,6 @@
 {
   "name": "@imgcook/cli-utils",
-  "version": "0.1.0-alpha.3",
+  "version": "0.1.0-alpha.4",
   "description": "imgcook cli utils",
   "main": "index.js",
   "scripts": {
@@ -23,5 +23,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "2d5f706a53d1bd17225d1230b81d3a2d33303150"
+  "gitHead": "7e8ec66cd5faf5fe759ce4dd823504831fdff6f2"
 }
