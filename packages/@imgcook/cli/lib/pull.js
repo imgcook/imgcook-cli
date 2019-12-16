@@ -49,6 +49,7 @@ const pull = async (value, option) => {
       mod_id: value
     }
   });
+
   if (repoData.data) {
     let data = repoData.data;
     const moduleData = data.moduleData;
@@ -108,8 +109,9 @@ const pull = async (value, option) => {
       isSuccess = false;
     }
 
-    if (!moduleData) {
-      spinner.fail(`模块不存在`);
+    if (!moduleData && repoData.errorMsg) {
+      spinner.fail(repoData.errorMsg);
+      return;
     }
 
     if (isSuccess) {
