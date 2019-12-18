@@ -223,6 +223,7 @@ const config = async (value, option) => {
     }
     const message = chalk.green(`设置 ${option.set} 成功`);
     console.log(message);
+    return message;
   }
   if (option.remove) {
     remove({
