@@ -13,11 +13,11 @@ const init = async (value, option) => {
   if (typeof name !== 'string') {
     name = 'test';
   }
-  // 检查是否存在配置文件
+  // Check config file
   if (fse.existsSync(cliConfig.configFile)) {
     configData = await fse.readJson(cliConfig.configFile);
   } else {
-    // 如果配置为空则去设置
+    // Set if the configuration is empty
     require('./config')('set', {});
   }
   try {

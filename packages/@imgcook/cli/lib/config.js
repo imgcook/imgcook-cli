@@ -1,29 +1,5 @@
-const dsl = [
-  {
-    name: 'H5 标准开发规范',
-    id: '5'
-  },
-  {
-    name: 'React 开发规范',
-    id: '12'
-  },
-  {
-    name: 'Vue 开发规范',
-    id: '29'
-  },
-  {
-    name: '支付宝小程序开发规范',
-    id: '79'
-  },
-  {
-    name: 'Rax 标准开发规范',
-    id: '1'
-  },
-  {
-    name: '微信小程序开发规范',
-    id: '21'
-  }
-];
+const { dsl } = require('./constant');
+
 let curDslId = '12';
 let promptConfig = [
   {
@@ -42,6 +18,7 @@ let promptConfig = [
     name: 'dslId',
     message: 'DSL',
     choices: [
+      'React D2C Schema',
       'H5 标准开发规范',
       'React 开发规范',
       'Vue 开发规范',

@@ -21,7 +21,7 @@ const cliConfig = {
   }
 };
 
-// Post请求
+// Post request
 const ajaxPost = (url, param) => {
   return new Promise(resolve => {
     request.post(
@@ -51,7 +51,7 @@ const ajaxGet = (url, param) => {
   });
 };
 
-// 写文件
+// write file
 const writeFile = (content, filePath, code) => {
   return new Promise((resolve, reject) => {
     fs.writeFile(
@@ -226,7 +226,7 @@ const getTokenInfo = async option => {
 const getTeamInfo = async option => {
   const { config, id, type } = option;
   if (!id) {
-    console.error(chalk.red('缺少id，执行 `imgcook config sync --id <moduleId>'));
+    console.error(chalk.red('lack id，execution `imgcook config sync --id <moduleId>'));
     return {};
   }
   const apiUrl = `${domain}/api-open/v2/getTeamInfo?access_id=${config.accessId}&id=${id}&type=${type}`;

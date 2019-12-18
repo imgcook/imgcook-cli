@@ -64,16 +64,28 @@ const pull = async (value, option) => {
       let plugin = configData.plugin || [];
 
       // 拉取配置
-      // const pluginData = await getPlugin({
-      //   config: configData,
-      //   id: value,
-      //   type: 'module'
-      // });
+      const pluginData = await getPlugin({
+        config: configData,
+        id: value,
+        type: 'module'
+      });
       // if (pluginData && pluginData.plugin && pluginData.plugin.length > 0) {
       //   plugin = pluginData.plugin;
-      //   await installPluginSync(plugin, imgcookModulesPath);
+      //   let needInstallPlugin = [];
+      //   try {
+      //     const files = fs.readdirSync(`${imgcookModulesPath}/node_modules/@imgcook`);
+      //     for (const item of plugin) {
+      //       if (files.indexOf(item.split('/')[1]) === -1) {
+      //         needInstallPlugin.push(item);
+      //       }
+      //     }
+      //   } catch (error) {
+      //     needInstallPlugin = plugin;
+      //   }
+      //   if (needInstallPlugin.length > 0) {
+      //     await installPluginSync(needInstallPlugin, imgcookModulesPath);
+      //   }
       // }
-
       if (plugin.length > 0) {
         for (const pluginItem of plugin) {
           const pluginItemPath = `${imgcookModulesPath}/node_modules/${pluginItem}`;

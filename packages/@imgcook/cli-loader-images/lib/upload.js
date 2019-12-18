@@ -14,7 +14,7 @@ class upload {
     } else if (file instanceof Stream) {
       stream = file;
     } else {
-      throw TypeError('只支持传入文件路径或Stream实例');
+      throw TypeError('Only incoming file paths or stream instances are supported.');
     }
 
     const paths = stream.path.split('/');

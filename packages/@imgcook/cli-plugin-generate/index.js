@@ -22,7 +22,7 @@ const generatePlugin = async (value, option) => {
     filePath = `${option.filePath}/${option.item.filePath}${option.panelName}`;
   }
 
-  // 针对 package 依赖 merge 处理
+  // Depend on merge processing for package
   try {
     if (option.panelName === 'package.json') {
       const packagePath = `${option.filePath}/package.json`;

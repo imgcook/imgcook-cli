@@ -13,19 +13,19 @@ const install = async (value, option) => {
     fse.mkdirSync(`${imgcookModulesPath}`);
   }
 
-  // 安装generator
+  // install generator
   if (value === 'generator') {
     const generator = configData.generator;
     installPlugin(generator, imgcookModulesPath);
   }
 
-  // 安装plugin
+  // install plugin
   if (value === 'plugin') {
     const plugin = configData.plugin;
     installPlugin(plugin, imgcookModulesPath);
   }
 
-  // 安装generator和plugin
+  // install generator and plugin
   if (value !== 'generator' && value !== 'plugin') {
     if (typeof option.name === 'function' && value === undefined) {
       const generator = configData.generator;

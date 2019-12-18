@@ -2,7 +2,7 @@
 const semver = require('semver');
 const chalk = require('chalk');
 
-// 检查Node版本
+// Review Node Version
 if (!semver.gte(process.version, '9.0.0')) {
   console.log(
     chalk.red(
@@ -50,7 +50,7 @@ program
   .option('-p, --path <path>', 'Absolute or relative path')
   .option(
     '-a, --app',
-    'Pull module into `mod` folder while your are in imgcook-app'
+    'Pull module into `mod` folder while your are in imgcook app project'
   )
   .allowUnknownOption()
   .action(async (value, cmd) => {

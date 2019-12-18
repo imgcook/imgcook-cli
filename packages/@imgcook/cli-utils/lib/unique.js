@@ -1,4 +1,4 @@
-// 过滤数组重复项
+// Filter array duplicates.
 exports.unique = array => {
   return array
     .concat()
