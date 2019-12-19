@@ -97,7 +97,6 @@ const pull = async (value, option) => {
         let config = {
           ...configData,
           value
-          // ...option
         };
         let rdata = {
           data,

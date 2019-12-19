@@ -65,6 +65,14 @@ program
     require('../lib/init')(value, cmd);
   });
 
+  program
+  .command('update')
+  .description('update imgcook cli')
+  .allowUnknownOption()
+  .action(async (value, cmd) => {
+    require('../lib/update')(value, cmd);
+  });
+
 // Output help information on unknown commands
 program.arguments('<command>').action(cmd => {
   program.outputHelp();
