@@ -8,25 +8,26 @@ const cwd = process.cwd();
 const {
   ajaxPost,
   getPlugin,
-  cliConfig,
-  installPluginSync
+  cliConfig
+  // installPluginSync
 } = require('./helper');
 
 const pull = async (value, option) => {
   let filePath = cwd;
-  if (option.path) {
-    filePath = path.isAbsolute(option.path)
-      ? option.path
-      : path.join(cwd, option.path);
-  }
+  option.path = option.path || value;
+  filePath = path.isAbsolute(option.path)
+    ? option.path
+    : path.join(cwd, option.path);
 
   if (!fs.existsSync(cliConfig.configFile)) {
-    console.log('请先设置配置，执行`imgcook config set`');
+    console.log(
+      'Please set the configuration first，Execute `imgcook config set`'
+    );
     const inquirer = require('inquirer');
     inquirer
       .prompt({
         type: 'confirm',
-        message: '是否开始设置？',
+        message: 'Whether to start setting？',
         name: 'set'
       })
       .then(async answers => {
@@ -49,12 +50,18 @@ const pull = async (value, option) => {
       mod_id: value
     }
   });
-
-  if (repoData.data) {
+  if (repoData.data && repoData.data.code) {
     let data = repoData.data;
+
+    // fs.writeFile(
+    //   `${filePath}/demo.json`,
+    //   JSON.stringify(data, null, 2),
+    //   'utf8',
+    //   () => {}
+    // );
     const moduleData = data.moduleData;
     let errorData;
-    moduleData && spinner.start(`「${moduleData.name}」模块下载中...`);
+    moduleData && spinner.start(`「${moduleData.name}」Downloading module...`);
     if (!fs.existsSync(filePath)) {
       fs.mkdirSync(filePath);
     }
@@ -87,17 +94,19 @@ const pull = async (value, option) => {
       //   }
       // }
       if (plugin.length > 0) {
+        let config = {
+          ...configData,
+          value
+          // ...option
+        };
+        let rdata = {
+          data,
+          filePath,
+          config
+        };
         for (const pluginItem of plugin) {
           const pluginItemPath = `${imgcookModulesPath}/node_modules/${pluginItem}`;
-          data = await require(pluginItemPath)({
-            data,
-            filePath,
-            config: configData,
-            cmd: {
-              value,
-              ...option
-            }
-          });
+          rdata = await require(pluginItemPath)(rdata);
         }
       }
     } catch (error) {
@@ -127,15 +136,14 @@ const pull = async (value, option) => {
     }
 
     if (isSuccess) {
-      spinner.succeed(`「${moduleData.name}」下载完成`);
+      spinner.succeed(`「${moduleData.name}」Download completed`);
     } else {
-      spinner.fail(`「${moduleData.name}」下载失败`);
+      spinner.fail(`「${moduleData.name}」Download failed`);
       errorData && console.error(errorData);
       data.errorList && console.error(data.errorList);
     }
   }
-
-  if (!repoData.success) {
+  if (!repoData.success || repoData.success === 'false') {
     if (repoData.code && repoData.code.message) {
       console.log(chalk.red(`Error: ${repoData.code.message}`));
     } else {

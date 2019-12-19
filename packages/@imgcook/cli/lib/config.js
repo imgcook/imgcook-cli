@@ -18,8 +18,8 @@ let promptConfig = [
     name: 'dslId',
     message: 'DSL',
     choices: [
-      'React D2C Schema',
       'H5 标准开发规范',
+      'React D2C Schema',
       'React 开发规范',
       'Vue 开发规范',
       '支付宝小程序开发规范',
@@ -92,7 +92,7 @@ const config = async (value, option) => {
     fse.mkdirSync(`${cliConfig.path}`);
   }
 
-  // 检查是否存在配置文件
+  // Check if a configuration file exists
   if (fse.existsSync(cliConfig.configFile)) {
     try {
       configData = await fse.readJson(cliConfig.configFile);
@@ -100,7 +100,7 @@ const config = async (value, option) => {
       configData = {};
     }
   } else if (!option.set && !option.get && !option.remove) {
-    // 如果配置为空则去设置
+    // If the configuration is empty then go to set
     value = 'set';
   }
 
@@ -108,7 +108,7 @@ const config = async (value, option) => {
     fse.mkdirSync(`${imgcookModulesPath}`);
   }
 
-  // 编辑
+  // edit
   if (value === 'edit') {
     childProcess.exec(`open ${cliConfig.configFile}`);
     return;
@@ -149,14 +149,14 @@ const config = async (value, option) => {
     return;
   }
 
-  // 不存在指令
+  // No instruction exists
   if (value !== 'set' && !option.set && !option.get && !option.remove) {
     const result = JSON.stringify(configData, null, 2);
     console.log(result);
     return result;
   }
 
-  // 设置
+  // setting
   if (value === 'set') {
     promptConfig = initConfig(promptConfig, configData);
     inquirer.prompt(promptConfig).then(async answers => {
@@ -198,7 +198,7 @@ const config = async (value, option) => {
     if (option.set === 'generator' || option.set === 'plugin') {
       installPlugin([value], imgcookModulesPath);
     }
-    const message = chalk.green(`设置 ${option.set} 成功`);
+    const message = chalk.green(`Set up 「${option.set}」 success.`);
     console.log(message);
     return message;
   }
@@ -223,7 +223,7 @@ const config = async (value, option) => {
         console.error(error);
       }
     }
-    console.log(chalk.green(`删除 ${option.remove} 成功`));
+    console.log(chalk.green(`delete 「${option.remove}」 success.`));
   }
   if (option.get) {
     const value = get(configData, option.get);
