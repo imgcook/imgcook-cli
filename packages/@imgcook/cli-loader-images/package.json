@@ -1,6 +1,6 @@
 {
   "name": "@imgcook/cli-loader-images",
-  "version": "0.1.0-alpha.6",
+  "version": "0.1.0-alpha.7",
   "description": "",
   "main": "index.js",
   "directories": {
@@ -16,7 +16,7 @@
   "author": "gindis",
   "license": "ISC",
   "dependencies": {
-    "@imgcook/cli-utils": "^0.1.0-alpha.6",
+    "@imgcook/cli-utils": "^0.1.0-alpha.7",
     "fs-extra": "^7.0.1",
     "request": "^2.88.0"
   },
@@ -32,5 +32,5 @@
     "registry": "http://registry.npmjs.org/",
     "access": "public"
   },
-  "gitHead": "f0cf3430c2c81072839ad829c58c8a873ea504c0"
+  "gitHead": "6781e1db241bb13f08041898e1cb9128e2b9034a"
 }

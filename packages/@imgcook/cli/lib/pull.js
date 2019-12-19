@@ -117,8 +117,8 @@ const pull = async (value, option) => {
     if (fs.existsSync(imgrcPath)) {
       fs.unlinkSync(imgrcPath);
     }
-    let isSuccess = true;
 
+    let isSuccess = true;
     if (!errorData) {
       if (!data.errorList || data.errorList.length === 0) {
         isSuccess = true;
@@ -138,15 +138,14 @@ const pull = async (value, option) => {
       spinner.succeed(`「${moduleData.name}」Download completed`);
     } else {
       spinner.fail(`「${moduleData.name}」Download failed`);
-      errorData && console.error(errorData);
-      data.errorList && console.error(data.errorList);
     }
   }
+
   if (!repoData.success || repoData.success === 'false') {
     if (repoData.code && repoData.code.message) {
-      console.log(chalk.red(`Error: ${repoData.code.message}`));
+      spinner.fail(`${repoData.code.message}`);
     } else {
-      console.log(chalk.red(`Error: ${JSON.stringify(repoData)}`));
+      spinner.fail(`${repoData.errorMsg}`);
     }
   }
 };
