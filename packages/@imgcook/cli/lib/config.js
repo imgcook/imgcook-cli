@@ -65,6 +65,7 @@ const inquirer = require('inquirer');
 const chalk = require('chalk');
 const ora = require('ora');
 const childProcess = require('child_process');
+const fs = require('fs');
 
 const spinner = ora();
 const initConfig = (promptConfig, config) => {
@@ -176,7 +177,39 @@ const config = async (value, option) => {
       const generator = answers.generator || [];
       let plugin = answers.plugin || [];
       plugin = plugin.concat(generator);
-      installPlugin(plugin, imgcookModulesPath);
+      let needInstallPlugin = [];
+      let noInstallPlugin = [];
+      try {
+        const files = fs.readdirSync(`${imgcookModulesPath}/node_modules/@imgcook`);
+        for (const item of plugin) {
+          if (files.indexOf(item.split('/')[1]) === -1) {
+            needInstallPlugin.push(item);
+          } else {
+            noInstallPlugin.push(item);
+          }
+        }
+      } catch (error) {
+        needInstallPlugin = plugin;
+      }
+      if (noInstallPlugin.length > 0) {
+        inquirer.prompt(
+          {
+            type: "confirm",
+            message: "Reinstall all package?",
+            default: false,
+            name: "reinstall",
+            prefix: ""
+          }
+        ).then(async answers => {
+          if (answers.reinstall) {
+            installPlugin(plugin, imgcookModulesPath);
+          } else {
+            installPlugin(needInstallPlugin, imgcookModulesPath);
+          }
+        })
+      } else {
+        installPlugin(plugin, imgcookModulesPath);
+      }
     });
   }
 
