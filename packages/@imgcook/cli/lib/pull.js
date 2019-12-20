@@ -135,9 +135,9 @@ const pull = async (value, option) => {
     }
 
     if (isSuccess) {
-      spinner.succeed(`「${moduleData.name}」Download completed`);
+      spinner.succeed(`「${moduleData.name}」Download completed.`);
     } else {
-      spinner.fail(`「${moduleData.name}」Download failed`);
+      spinner.fail(`「${moduleData.name}」Download failed.`);
     }
   }
 

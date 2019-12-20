@@ -231,8 +231,8 @@ const config = async (value, option) => {
     if (option.set === 'generator' || option.set === 'plugin') {
       installPlugin([value], imgcookModulesPath);
     }
-    const message = chalk.green(`Set up 「${option.set}」 success.`);
-    console.log(message);
+    const message = chalk.green(`Set up 「${value}」 success.`);
+    // console.log(message);
     return message;
   }
   if (option.remove) {
@@ -256,7 +256,7 @@ const config = async (value, option) => {
         console.error(error);
       }
     }
-    console.log(chalk.green(`delete 「${option.remove}」 success.`));
+    console.log(chalk.green(`delete 「${value}」 success.`));
   }
   if (option.get) {
     const value = get(configData, option.get);
