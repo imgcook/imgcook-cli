@@ -1,6 +1,6 @@
 {
   "name": "@imgcook/cli-plugin-generate",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "imgcook plugin",
   "main": "index.js",
   "scripts": {
@@ -20,5 +20,5 @@
     "registry": "http://registry.npmjs.org/",
     "access": "public"
   },
-  "gitHead": "6cbd8623c3deaabb046734b62b77400a63bf733a"
+  "gitHead": "275af03e761071f692e34e83117247a472b13122"
 }
