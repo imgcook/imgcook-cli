@@ -35,7 +35,7 @@ const init = async (value, option) => {
             ...option
           },
           folderPath,
-          name: value,
+          name,
         });
       }
     }
