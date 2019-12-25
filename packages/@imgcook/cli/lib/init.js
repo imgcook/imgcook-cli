@@ -11,7 +11,7 @@ const init = async (value, option) => {
   let data;
   let configData = {};
   if (typeof name !== 'string') {
-    name = 'test';
+    name = 'imgcook_demo';
   }
   // Check config file
   if (fse.existsSync(cliConfig.configFile)) {
