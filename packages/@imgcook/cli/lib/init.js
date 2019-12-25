@@ -38,9 +38,11 @@ const init = async (value, option) => {
           name,
         });
       }
+    } else {
+      console.log(chalk.red('No「Generator」plugin configured.'))
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 

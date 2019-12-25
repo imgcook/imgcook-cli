@@ -19,7 +19,6 @@ let promptConfig = [
     message: 'DSL',
     choices: [
       'H5 标准开发规范',
-      'React D2C Schema',
       'React 开发规范',
       'Vue 开发规范',
       '支付宝小程序开发规范',
@@ -40,14 +39,14 @@ let promptConfig = [
     type: 'checkbox',
     name: 'generator',
     message: 'Generator',
-    default: ['@imgcook/generator-react'],
+    default: [],
     choices: ['@imgcook/generator-react']
   },
   {
     type: 'checkbox',
     name: 'plugin',
     message: 'Plugin',
-    default: ['@imgcook/plugin-generate'],
+    default: ['@imgcook/plugin-images', '@imgcook/plugin-generate'],
     choices: ['@imgcook/plugin-images', '@imgcook/plugin-generate']
   }
 ];
@@ -77,6 +76,9 @@ const initConfig = (promptConfig, config) => {
         promptConfig[1].default = item.name;
       }
     }
+  }
+  if (config.generator) {
+    promptConfig[2].default = config.generator;
   }
   if (config.plugin) {
     promptConfig[3].default = config.plugin;

@@ -1,19 +1,15 @@
 const dsl = [
   {
-    name: 'React D2C Schema',
-    id: 41,
-  },
-  {
     name: 'H5 标准开发规范',
-    id: '5'
+    id: '39'
   },
   {
     name: 'React 开发规范',
-    id: '12'
+    id: '41'
   },
   {
     name: 'Vue 开发规范',
-    id: '29'
+    id: '60'
   },
   {
     name: '支付宝小程序开发规范',
@@ -21,11 +17,11 @@ const dsl = [
   },
   {
     name: 'Rax 标准开发规范',
-    id: '1'
+    id: '207'
   },
   {
     name: '微信小程序开发规范',
-    id: '21'
+    id: '40'
   }
 ]
 

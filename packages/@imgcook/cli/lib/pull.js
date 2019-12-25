@@ -62,9 +62,6 @@ const pull = async (value, option) => {
     const moduleData = data.moduleData;
     let errorData;
     moduleData && spinner.start(`「${moduleData.name}」Downloading module...`);
-    if (!fs.existsSync(filePath)) {
-      fs.mkdirSync(filePath);
-    }
 
     try {
       // execute plugin
