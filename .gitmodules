@@ -4,6 +4,3 @@
 [submodule "packages/@imgcook/plugin-images"]
 	path = packages/@imgcook/plugin-images
 	url = git@github.com:imgcook-plugin/plugin-images.git
-[submodule "packages/@imgcook/generator-react"]
-	path = packages/@imgcook/generator-react
-	url = git@github.com:imgcook-plugin/generator-react.git
