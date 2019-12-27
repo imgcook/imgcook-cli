@@ -42,7 +42,6 @@ const pull = async (value, option) => {
 
   let configData = fs.readFileSync(cliConfig.configFile, 'UTF-8');
   configData = JSON.parse(configData);
-
   const repoData = await ajaxPost(url, {
     data: {
       dsl_id: configData.dslId,
@@ -137,10 +136,11 @@ const pull = async (value, option) => {
       spinner.fail(`「${moduleData.name}」Download failed.`);
     }
   }
-
   if (!repoData.success || repoData.success === 'false') {
     if (repoData.code && repoData.code.message) {
       spinner.fail(`${repoData.code.message}`);
+    } else if (typeof repoData === 'string') {
+      spinner.fail('Export code exception.');
     } else {
       spinner.fail(`${repoData.errorMsg}`);
     }
