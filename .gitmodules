@@ -1,6 +1,0 @@
-[submodule "packages/@imgcook/plugin-generate"]
-	path = packages/@imgcook/plugin-generate
-	url = git@github.com:imgcook-plugin/plugin-generate.git
-[submodule "packages/@imgcook/plugin-images"]
-	path = packages/@imgcook/plugin-images
-	url = git@github.com:imgcook-plugin/plugin-images.git
