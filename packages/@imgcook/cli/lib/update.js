@@ -6,7 +6,7 @@ const spinner = ora();
 const update = async (value, option) => {
   try {
     spinner.start(`Update imgcook cli...`);
-    childProcess.exec('npm update @imgcook/cli -g', () => {
+    childProcess.exec('npm install -g @imgcook/cli', () => {
       spinner.succeed(`Update complete.`);
     });
     
