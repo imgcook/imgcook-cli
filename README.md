@@ -48,7 +48,7 @@ imgcook config edit
 > Rax 标准开发规范：1
 > 
 > Get accessId ：Official website top right corner avatar -> Personal page -> Top left Icon
-> ![image.png](https://intranetproxy.alipay.com/skylark/lark/0/2019/png/199/1576161013370-acd72bac-c714-4653-828e-963d6aea3c8b.png#align=left&display=inline&height=164&name=image.png&originHeight=480&originWidth=1156&size=151842&status=done&style=none&width=396)
+> <img src="https://gw.alicdn.com/tfs/TB1rFW3qeL2gK0jSZFmXXc7iXXa-1156-480.png" width=396 alt="" />
 
 
 #### imgcook pull
