@@ -1,5 +1,11 @@
 # imgcook-cli
 
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/imgcook/imgcook-cli/blob/master/LICENSE)
+[![GitHub tag](https://img.shields.io/github/tag/imgcook/imgcook-cli.svg)]()
+[![Build Status](https://travis-ci.org/imgcook/imgcook-cli.svg?branch=master)](https://travis-ci.org/imgcook/imgcook-cli)
+[![npm dm](https://img.shields.io/npm/dm/@imgcook/cli)](https://www.npmjs.com/package/@imgcook/cli)
+[![GitHub repo size](https://img.shields.io/github/repo-size/imgcook/imgcook-cli)]()
+
 ## 概述
 
 imgcook-cli 可以结合 Plugin 的能力一键将 imgcook 平台生成的代码产物放置到你的本地项目工程里，无缝融合到你的研发流程，如果你有对 imgcook 生成代码的产物有加工需求（比如自动上传图片到自己的图床、文件目录转换等），imgcook-cli 是你非常好的选择。
