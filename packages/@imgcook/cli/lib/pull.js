@@ -119,9 +119,11 @@ const pull = async (value, option) => {
       if (!data.errorList || data.errorList.length === 0) {
         isSuccess = true;
       } else {
+        console.error(data.errorList);
         isSuccess = false;
       }
     } else {
+      console.error(errorData);
       isSuccess = false;
     }
 
