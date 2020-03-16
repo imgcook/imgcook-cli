@@ -1,6 +1,7 @@
 const chalk = require('chalk');
 const fse = require('fs-extra');
 const { cliConfig, installPlugin } = require('./helper');
+const logger = require('./logger');
 
 const install = async (value, option) => {
   let configData = {};
@@ -30,6 +31,10 @@ const install = async (value, option) => {
     if (typeof option.name === 'function' && value === undefined) {
       const generator = configData.generator;
       let plugin = configData.plugin;
+      if (!plugin) {
+        console.log('No plugins install');
+        return;
+      }
       plugin = plugin.concat(generator);
       installPlugin(plugin, imgcookModulesPath);
     } else {
@@ -40,6 +45,6 @@ const install = async (value, option) => {
 
 module.exports = (...args) => {
   return install(...args).catch(err => {
-    console.log(chalk.red(err));
+    logger.error(err);
   });
 };

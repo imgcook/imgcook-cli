@@ -1,4 +1,5 @@
 const { dsl } = require('./constant');
+const logger = require('./logger');
 
 let curDslId = '12';
 let promptConfig = [
@@ -255,7 +256,7 @@ const config = async (value, option) => {
           `cd ${imgcookModulesPath}/node_modules && rm -rf ${value}`
         );
       } catch (error) {
-        console.error(error);
+        logger.error(error);
       }
     }
     console.log(chalk.green(`delete 「${value}」 success.`));
@@ -280,6 +281,6 @@ const config = async (value, option) => {
 
 module.exports = (...args) => {
   return config(...args).catch(err => {
-    console.log(chalk.red(err));
+    logger.error(err);
   });
 };

@@ -2,6 +2,7 @@
 const childProcess = require('child_process');
 const ora = require('ora');
 const spinner = ora();
+const logger = require('./logger');
 
 const update = async (value, option) => {
   try {
@@ -17,6 +18,6 @@ const update = async (value, option) => {
 
 module.exports = (...args) => {
   return update(...args).catch(err => {
-    console.log(chalk.red(err));
+    logger.error(err);
   });
 };

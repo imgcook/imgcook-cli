@@ -3,6 +3,7 @@ const path = require('path');
 const chalk = require('chalk');
 const fse = require('fs-extra');
 const cwd = process.cwd();
+const logger = require('./logger');
 const { cliConfig } = require('./helper');
 const imgcookModulesPath = cliConfig.imgcookModules;
 
@@ -42,12 +43,12 @@ const init = async (value, option) => {
       console.log(chalk.red('No「Generator」plugin configured.'))
     }
   } catch (error) {
-    console.error(error);
+    logger.error(error);
   }
 };
 
 module.exports = (...args) => {
   return init(...args).catch(err => {
-    console.log(chalk.red(err));
+    logger.error(err);
   });
 };

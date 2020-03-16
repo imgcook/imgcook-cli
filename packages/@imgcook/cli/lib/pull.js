@@ -4,6 +4,7 @@ const chalk = require('chalk');
 const fs = require('fs');
 const spinner = ora();
 const cwd = process.cwd();
+const logger = require('./logger');
 
 const {
   ajaxPost,
@@ -119,11 +120,11 @@ const pull = async (value, option) => {
       if (!data.errorList || data.errorList.length === 0) {
         isSuccess = true;
       } else {
-        console.error(data.errorList);
+        logger.error(data.errorList);
         isSuccess = false;
       }
     } else {
-      console.error(errorData);
+      logger.error(errorData);
       isSuccess = false;
     }
 
@@ -151,6 +152,6 @@ const pull = async (value, option) => {
 
 module.exports = (...args) => {
   return pull(...args).catch(err => {
-    console.log(chalk.red(err));
+    logger.error(err);
   });
 };
