@@ -95,15 +95,14 @@ const config = async (value, option) => {
   if (!fse.existsSync(`${cliConfig.path}`)) {
     fse.mkdirSync(`${cliConfig.path}`);
   }
-
   // Check if a configuration file exists
-  if (fse.existsSync(cliConfig.configFile)) {
+  if (fse.existsSync(cliConfig.configFile )|| option.file) {
     try {
-      configData = await fse.readJson(cliConfig.configFile);
+      configData = await fse.readJson(option.file ? option.file : cliConfig.configFile);
     } catch (error) {
       configData = {};
     }
-  } else if (!option.set && !option.get && !option.remove) {
+  } else if (!option.set && !option.get && !option.remove && !option.file) {
     // If the configuration is empty then go to set
     value = 'set';
   }
@@ -154,7 +153,7 @@ const config = async (value, option) => {
   }
 
   // No instruction exists
-  if (value !== 'set' && !option.set && !option.get && !option.remove) {
+  if (value !== 'set' && !option.set && !option.get && !option.remove && !option.file) {
     const result = JSON.stringify(configData, null, 2);
     console.log(result);
     return result;
@@ -237,6 +236,13 @@ const config = async (value, option) => {
     const message = chalk.green(`Set up 「${value}」 success.`);
     // console.log(message);
     return message;
+  }
+  if (option.file) {
+    await fse.writeFile(
+      cliConfig.configFile,
+      JSON.stringify(configData, null, 2),
+      'utf8'
+    );
   }
   if (option.remove) {
     remove({
