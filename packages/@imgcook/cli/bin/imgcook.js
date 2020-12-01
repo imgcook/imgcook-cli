@@ -28,6 +28,7 @@ program
   .option('--get <path>', 'Get value from option')
   .option('--set <path> <value>', 'Set option value')
   .option('--json', 'Outputs JSON result only')
+  .option('--file <path>','Input file Path')
   .allowUnknownOption()
   .action(async (value, cmd) => {
     require('../lib/config')(value, minimist(process.argv.slice(3)));
