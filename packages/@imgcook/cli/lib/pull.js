@@ -61,7 +61,14 @@ const pull = async (value, option) => {
     // );
     const moduleData = data.moduleData;
     let errorData;
-    moduleData && spinner.start(`「${moduleData.name}」Downloading module...`);
+    if (!moduleData) {
+      return spinner.fail(`failed to parse module data, moduleData not found.`);
+    }
+    if (option.output === 'json') {
+      process.stdout.write(moduleData.json);
+      return;
+    }
+    spinner.start(`「${moduleData.name}」Downloading module...`);
 
     try {
       // execute plugin

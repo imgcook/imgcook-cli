@@ -53,6 +53,11 @@ program
     '-a, --app',
     'Pull module into `mod` folder while your are in imgcook app project'
   )
+  .option(
+    '-o, --output <type>',
+    'The output type, available values are: source and json',
+    'source'
+  )
   .allowUnknownOption()
   .action(async (value, cmd) => {
     require('../lib/pull')(value, cmd);
