@@ -2,4 +2,3 @@ node_modules/
 .DS_Store
 demo
 lerna-debug.log
-package-lock.json
