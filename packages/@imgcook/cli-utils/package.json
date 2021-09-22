@@ -1,6 +1,6 @@
 {
   "name": "@imgcook/cli-utils",
-  "version": "0.1.7",
+  "version": "0.2.0",
   "description": "imgcook cli utils",
   "main": "index.js",
   "scripts": {
