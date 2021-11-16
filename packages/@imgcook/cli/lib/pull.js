@@ -65,7 +65,7 @@ const pull = async (value, option) => {
       return spinner.fail(`failed to parse module data, moduleData not found.`);
     }
     if (option.output === 'json') {
-      process.stdout.write(moduleData.json);
+      process.stdout.write(moduleData.jsonv2);
       return;
     }
     spinner.start(`「${moduleData.name}」Downloading module...`);
