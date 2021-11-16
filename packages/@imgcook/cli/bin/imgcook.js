@@ -71,7 +71,7 @@ program
     require('../lib/init')(value, cmd);
   });
 
-  program
+program
   .command('update')
   .description('update imgcook cli')
   .allowUnknownOption()
